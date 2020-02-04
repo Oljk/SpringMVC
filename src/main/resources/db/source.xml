@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE datasources SYSTEM "dataSource.dtd">
+<datasources>
+    <datasource>
+        <source-name>book_store</source-name>
+        <connection-url>jdbc:oracle:thin:@localhost:1521:XE</connection-url>
+        <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+        <user-name>SYSTEM</user-name>
+        <password>123456</password>
+    </datasource>
+</datasources>
