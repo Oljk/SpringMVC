@@ -5,9 +5,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import java.nio.file.Path;
+
 @Configuration
-@ComponentScan("springmvc.*")
+@ComponentScan(value = "springmvc.*")
 public class ApplicationContextConfig {
+
 
     @Bean(name = "viewResolver")
     public InternalResourceViewResolver getViewResolver() {
@@ -16,6 +19,4 @@ public class ApplicationContextConfig {
         viewResolver.setSuffix(".jsp");
         return viewResolver;
     }
-
-
 }

@@ -3,8 +3,7 @@ package springmvc.model.dao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springmvc.model.OwnExeption;
-import springmvc.model.dao.daoImpl.AuthorDAOImpl;
-import springmvc.model.entities.*;
+import springmvc.model.dao.daoImpl.*;
 
 @Configuration
 public class ConfigurationDAO {
@@ -14,8 +13,21 @@ public class ConfigurationDAO {
         return new ListDAO();
     }
 
-  /*  @Bean
-    public DAO getDao(Author author) throws OwnExeption {
+    @Bean
+    public AuthorDAO getAuthorDao() throws OwnExeption {
         return new AuthorDAOImpl();
-    }*/
+    }
+    @Bean
+    public ItemDAO getItemDao() throws OwnExeption {
+        return new ItemDAOImpl();
+    }
+    @Bean
+    public OrderDAO getOrderDao() throws OwnExeption {
+        return new OrderDAOImpl();
+    }
+    @Bean
+    public UserDAO getUserDao() throws OwnExeption {
+        return new UserDAOImpl();
+    }
+
 }

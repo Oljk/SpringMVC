@@ -1,5 +1,7 @@
 package springmvc.model.entities;
 
+import org.springframework.context.annotation.Bean;
+
 import java.util.Objects;
 
 

@@ -20,8 +20,9 @@
         <spring.test>3.2.4.RELEASE</spring.test>
         <junit.version>4.11</junit.version>
 		<java.version>1.6</java.version>
-		<spring.version>3.1.0.RELEASE</spring.version>
+		<spring.version>5.1.0.RELEASE</spring.version>
 		<cglib.version>2.2.2</cglib.version>
+        <querydsl.version>3.6.0</querydsl.version>
 	</properties>
 
 	<dependencies>
@@ -77,8 +78,42 @@
 			<version>${hb.manager}</version>
 		</dependency>
 
+        <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-core</artifactId>
+            <version>${querydsl.version}</version>
+        </dependency>
 
-	</dependencies>
+        <dependency>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-jpa</artifactId>
+        <version>2.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>6.0</version>
+        </dependency>
+
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+    </dependencies>
 
 	<repositories>
 		<repository>
@@ -96,8 +131,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.0.2</version>
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<source>8</source>
+					<target>8</target>
 				</configuration>
 			</plugin>
 		</plugins>

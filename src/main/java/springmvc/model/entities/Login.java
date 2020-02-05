@@ -1,10 +1,17 @@
 package springmvc.model.entities;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
+
+
 
 public class Login {
 
+    @NotNull(message="is required")
     private String login;
+
+    @Size(min = 6, max = 15, message="min = 6, max = 15")
     private String password;
 
     public Login(){}

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--suppress ServletWithoutMappingInspection, ServletWithoutMappingInspection -->
 <web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://java.sun.com/jsf/core"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>springmvcai</display-name>
 	<context-param>
 		<param-name>contextClass</param-name>
@@ -9,7 +10,17 @@
 			org.springframework.web.context.support.AnnotationConfigWebApplicationContext
 		</param-value>
 	</context-param>
-	<listener>
+
+    <filter-mapping>
+        <filter-name>filterChainProxy</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+	<filter>
+		<filter-name>filterChainProxy</filter-name>
+		<filter-class>springmvc.filters.CORSFilter</filter-class>
+	</filter>
+    <listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
@@ -36,4 +47,5 @@
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
+
 </web-app>

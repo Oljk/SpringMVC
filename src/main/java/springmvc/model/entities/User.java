@@ -1,7 +1,9 @@
 package springmvc.model.entities;
 
+import javax.persistence.Entity;
 import java.util.Objects;
 
+@Entity
 public class User {
     private int user_id;
     private String name;
