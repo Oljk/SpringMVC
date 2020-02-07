@@ -57,10 +57,8 @@ public class DaoConnection {
                     sb.append(str + "\n");
                 }
                 String sql = sb.toString();
-                System.out.println(sql);
                 try {
                     getConnection().createStatement().execute(sql);
-
                     init = true;
                 } catch (SQLException e) {
                     e.printStackTrace();
