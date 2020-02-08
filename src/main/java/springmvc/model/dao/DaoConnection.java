@@ -59,11 +59,11 @@ public class DaoConnection {
                     init = true;
                     logger.trace("db init");
                 } catch (SQLException e) {
-                    logger.warn("init db: " + e.getSQLState() + e.getStackTrace());
+                    logger.warn("init db: " + e.getSQLState() + e.getStackTrace().toString());
                 }
             }
         } catch (SAXException | ParserConfigurationException | IOException e) {
-            logger.error("create connection: " + e.getMessage() +  " - "  + e.getStackTrace());
+            logger.error("create connection: " + e.getMessage() +  " - "  + e.getStackTrace().toString());
         }
         logger.trace("ceated connection");
     }
@@ -80,7 +80,7 @@ public class DaoConnection {
         } catch (ClassNotFoundException e) {
             logger.error("No driver\n" + e.getMessage());
         } catch (SQLException e) {
-            logger.error("Connection to database is failed\n" + e.getStackTrace());
+            logger.error("Connection to database is failed\n" + e.getStackTrace().toString());
         }
         return connection;
     }

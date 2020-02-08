@@ -58,9 +58,6 @@ public class Login {
     }
 
     public boolean checkLogin() {
-        if (this.login.isEmpty() || this.password.isEmpty()) {
-            return  false;
-        }
-        return true;
+        return !this.login.isEmpty() && !this.password.isEmpty();
     }
 }

@@ -22,6 +22,7 @@ public class CORSFilter implements Filter {
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with, Content-Type");
         response.setCharacterEncoding("UTF-8");
         req.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=utf-8");
         chain.doFilter(req, response);
     }
 

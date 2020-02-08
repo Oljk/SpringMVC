@@ -11,7 +11,7 @@
 
 
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/styles/common.css">
+          href="${pageContext.request.contextPath}/css/common.css">
 
 </head>
 <body>
