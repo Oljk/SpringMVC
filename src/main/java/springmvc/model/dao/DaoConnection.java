@@ -1,21 +1,16 @@
 package springmvc.model.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import springmvc.config.ApplicationContextConfig;
-import springmvc.listeners.ContextListener;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.validation.ReportAsSingleViolation;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
@@ -28,6 +23,8 @@ import java.util.Locale;
 
 @Service
 public class DaoConnection {
+
+    private static Logger logger = LoggerFactory.getLogger(DaoConnection.class);
 
     private static String className;
     private static String url;
@@ -60,14 +57,15 @@ public class DaoConnection {
                 try {
                     getConnection().createStatement().execute(sql);
                     init = true;
+                    logger.trace("db init");
                 } catch (SQLException e) {
-                    e.printStackTrace();
-                    //log
+                    logger.warn("init db: " + e.getSQLState() + e.getStackTrace());
                 }
             }
         } catch (SAXException | ParserConfigurationException | IOException e) {
-            e.printStackTrace();
+            logger.error("create connection: " + e.getMessage() +  " - "  + e.getStackTrace());
         }
+        logger.trace("ceated connection");
     }
 
     @Autowired
@@ -78,15 +76,12 @@ public class DaoConnection {
             Locale.setDefault(Locale.ENGLISH);
             connection = DriverManager.getConnection(url, user,password);
             if (connection.isClosed()) {
-                System.out.println("Connection error!");
-                //logs
+                logger.warn("Connection error");
             }
         } catch (ClassNotFoundException e) {
-            System.out.println("No driver");
-            //logs
+            logger.error("No driver\n" + e.getMessage());
         } catch (SQLException e) {
-            System.out.println("Connection to database is failed");
-            //logs
+            logger.error("Connection to database is failed\n" + e.getStackTrace());
         }
         return connection;
     }
