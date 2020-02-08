@@ -28,4 +28,6 @@ public class ApplicationContextConfig {
         messageSource.setBasename("/WEB-INF/classes/messages");
         return messageSource;
     }
+
+
 }

@@ -68,7 +68,6 @@ public class DaoConnection {
         logger.trace("ceated connection");
     }
 
-    @Autowired
     public static Connection getConnection() {
         Connection connection = null;
         try {
