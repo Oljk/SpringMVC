@@ -65,8 +65,6 @@ EXECUTE IMMEDIATE 'Alter table author_has_book add  foreign key (item_id) refere
 
 dbms_output.put_line('i alive');
 
-
-
 EXECUTE IMMEDIATE ' CREATE SEQUENCE get_id
 	INCREMENT BY 1
 	START WITH 100
@@ -78,7 +76,6 @@ EXCEPTION
 	when others then
 		dbms_output.put_line('exeption');
 
-EXECUTE IMMEDIATE 'commit';
 end;
 
 

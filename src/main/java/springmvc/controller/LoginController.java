@@ -6,11 +6,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import springmvc.model.dao.ConfigurationDAO;
 import springmvc.model.entities.*;
 
 import javax.jws.soap.SOAPBinding;
 import java.util.Map;
+
+import org.springframework.ui.Model;
+
 
 @Controller
 public class LoginController {
@@ -24,6 +28,18 @@ public class LoginController {
         map.put("contactList", (new ConfigurationDAO()).getUserDao().getUserByLogin("User1Sur"));
         return "login";
     }
+
+    @RequestMapping(value="/loginfailed", method = RequestMethod.GET)
+    public String loginerror(Model model) {
+        model.addAttribute("error", "true");
+        return "login";
+    }
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public String logout(Model model) {
+        return "login";
+    }
+
+
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
