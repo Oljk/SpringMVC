@@ -2,6 +2,7 @@ package springmvc.model.dao.daoImpl;
 
 
 
+import org.springframework.stereotype.Repository;
 import springmvc.model.dao.*;
 import springmvc.model.entities.*;
 
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Repository
 public class BookDAOImpl implements BookDAO {
 
     private Connection connection;
@@ -55,21 +56,23 @@ public class BookDAOImpl implements BookDAO {
         return book;
     }
 
+
     @Override
     public List<Book> getAllBooks() {
         List<Book> items = new ArrayList<>();
         connection();
         try {
-            preparedStatement = connection.prepareStatement("select" +
-                    " item_id, amount, year, price, publishing_house" +
-                    "from" +
+            resultSet = connection.createStatement().executeQuery("select" +
+                    " item_id, amount, year, price, publishing_house " +
+                    "from " +
                     "GOOD_ATTRS");
-            resultSet = preparedStatement.executeQuery();
             Book book;
             while (resultSet.next()) {
+                System.out.println("hello");
                 book = parseBook(resultSet);
                 items.add(book);
             }
+            resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -82,8 +85,8 @@ public class BookDAOImpl implements BookDAO {
         List<Book> listBook = new ArrayList<>();
         try {
             preparedStatement = connection.prepareStatement("select item_id \n" +
-                    "from good_attrs" +
-                    "where" +
+                    "from good_attr s" +
+                    "where " +
                     "AUTHOR_ID = ?");
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
