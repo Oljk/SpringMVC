@@ -2,7 +2,6 @@ package springmvc.model.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -64,6 +63,7 @@ public class DaoConnection {
             }
         } catch (SAXException | ParserConfigurationException | IOException e) {
             logger.error("create connection: " + e.getMessage() +  " - "  + e.getStackTrace().toString());
+            System.out.println("create conn" + e.getStackTrace().toString() + " - " + e.getMessage());
         }
         logger.trace("ceated connection");
     }
@@ -76,11 +76,14 @@ public class DaoConnection {
             connection = DriverManager.getConnection(url, user,password);
             if (connection.isClosed()) {
                 logger.warn("Connection error");
+                System.out.println("connectio error");
             }
         } catch (ClassNotFoundException e) {
             logger.error("No driver\n" + e.getMessage());
+            System.out.println("no driver");
         } catch (SQLException e) {
             logger.error("Connection to database is failed\n" + e.getStackTrace().toString());
+            e.printStackTrace();
         }
         return connection;
     }

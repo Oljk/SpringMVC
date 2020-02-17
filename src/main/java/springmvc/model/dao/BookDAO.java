@@ -1,11 +1,12 @@
 package springmvc.model.dao;
 
 
+import org.springframework.stereotype.Repository;
 import springmvc.model.entities.*;
 
 import java.util.List;
 
-
+@Repository
 public interface BookDAO extends DAO {
     List<Book> getAllBooks();
 

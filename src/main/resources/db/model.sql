@@ -32,7 +32,7 @@ EXECUTE IMMEDIATE 'Create table Author (
 EXECUTE IMMEDIATE 'Create table Item (
 	item_id NUMBER(10) NOT NULL PRIMARY KEY,
 	parent_id NUMBER(10),
-	name Varchar2 (20),
+	name Varchar2 (200),
 	type NUMBER(10) NOT NULL ,
 	desription Varchar2 (2000)
 )';
@@ -50,7 +50,7 @@ EXECUTE IMMEDIATE 'Create table Order_has_book (
 EXECUTE IMMEDIATE 'Create table Good_attrs (
 	amount NUMBER(10) NOT NULL ,
 	item_id NUMBER(10) PRIMARY KEY,
-	publishing_house Varchar2(30),
+	publishing_house Varchar2(200),
 	year number (10) NOT NULL ,
 	price NUMBER(10,3) NOT NULL
 )';

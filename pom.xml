@@ -114,7 +114,11 @@
             <version>${spring.version}</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>com.oracle.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>18.3.0.0</version>
+        </dependency>
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -151,6 +155,11 @@
 			<name>SpringSource Milestones Proxy</name>
 			<url>https://oss.sonatype.org/content/repositories/springsource-milestones</url>
 		</repository>
+            <repository>
+                <id>my-repo1</id>
+                <name>Geomajas Repository</name>
+                <url>http://maven.geomajas.org/</url>
+            </repository>
 	</repositories>
 
 	<build>

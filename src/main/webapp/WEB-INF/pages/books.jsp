@@ -25,7 +25,8 @@
     </div>
 </section>
 <section class="container">
-    <div class="row">
+<div class="row">
+<c:forEach items="${books}" var="book">
         <div class="col-sm-6 col-md-3" style="padding-bottom: 15px">
             <div class="thumbnail">
                 <div class="caption">
@@ -36,6 +37,7 @@
                 </div>
             </div>
         </div>
+</c:forEach>
     </div>
 </section>
 </body>

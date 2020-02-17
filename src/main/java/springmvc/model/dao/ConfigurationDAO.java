@@ -14,20 +14,25 @@ public class ConfigurationDAO {
     }
 
     @Bean
-    public AuthorDAO getAuthorDao() throws OwnExeption {
+    public AuthorDAO getAuthorDao() {
         return new AuthorDAOImpl();
     }
     @Bean
-    public ItemDAO getItemDao() throws OwnExeption {
+    public ItemDAO getItemDao() {
         return new ItemDAOImpl();
     }
     @Bean
-    public OrderDAO getOrderDao() throws OwnExeption {
+    public OrderDAO getOrderDao() {
         return new OrderDAOImpl();
     }
     @Bean
-    public UserDAO getUserDao() throws OwnExeption {
+    public UserDAO getUserDao() {
         return new UserDAOImpl();
     }
-
+    /*
+    @Bean
+    public BookDAO getBookDao(){
+        return new BookDAOImpl();
+    }
+*/
 }
