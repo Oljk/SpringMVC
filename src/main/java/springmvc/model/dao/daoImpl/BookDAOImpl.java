@@ -108,15 +108,18 @@ public class BookDAOImpl implements BookDAO {
     @Override
     public boolean updateAmount(int id, int amount) {
         connection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("update GOOD_ATTRS set AMOUNT = ? where ITEM_ID = ?");
+        try (PreparedStatement preparedStatement =  connection.prepareStatement("update GOOD_ATTRS set AMOUNT = ? where ITEM_ID = ?")) {
             preparedStatement.setInt(2, id);
             preparedStatement.setInt(1, amount);
             boolean ok = preparedStatement.executeUpdate() > 0;
-            resultSet.close();
-            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         disconnection();
         return false;
