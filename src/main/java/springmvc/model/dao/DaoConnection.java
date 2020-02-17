@@ -34,7 +34,9 @@ public class DaoConnection {
     private static DaoConnection instance = new DaoConnection();
     private boolean init = false;
 
-
+    public static DaoConnection getInstance() {
+        return instance;
+    }
 
     private DaoConnection () {
         try {
@@ -68,7 +70,7 @@ public class DaoConnection {
         logger.trace("ceated connection");
     }
 
-    public static Connection getConnection() {
+    public Connection getConnection() {
         Connection connection = null;
         try {
             Class.forName(className);
@@ -88,7 +90,7 @@ public class DaoConnection {
         return connection;
     }
 
-    public static void disconnection(PreparedStatement preparedStatement, ResultSet resultSet, Connection connection )
+    public void disconnection(PreparedStatement preparedStatement, ResultSet resultSet, Connection connection )
             throws SQLException {
                 if (preparedStatement != null) {
                     preparedStatement.close();

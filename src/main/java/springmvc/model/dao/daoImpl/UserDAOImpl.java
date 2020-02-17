@@ -16,13 +16,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void connection() {
-        connection = DaoConnection.getConnection();
+        connection = DaoConnection.getInstance().getConnection();
     }
 
     @Override
     public void disconnection() {
         try {
-            DaoConnection.disconnection(preparedStatement, resultSet, connection);
+            DaoConnection.getInstance().disconnection(preparedStatement, resultSet, connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }

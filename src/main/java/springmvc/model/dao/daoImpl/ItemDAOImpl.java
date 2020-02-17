@@ -98,13 +98,13 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public void connection() {
-        connection = DaoConnection.getConnection();
+        connection = DaoConnection.getInstance().getConnection();
     }
 
     @Override
     public void disconnection() {
         try {
-            DaoConnection.disconnection(preparedStatement, resultSet, connection);
+            DaoConnection.getInstance().disconnection(preparedStatement, resultSet, connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -118,7 +118,7 @@ public class ItemDAOImpl implements ItemDAO {
             preparedStatement = connection.prepareStatement("select \n" +
                     "  item_id, parent_id, name, type, description \n" +
                     "from \n" +
-                    "  items\n" +
+                    "  item\n" +
                     "where \n" +
                     "  item_id = ?");
             preparedStatement.setInt(1, id);

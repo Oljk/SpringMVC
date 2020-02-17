@@ -12,11 +12,16 @@ public interface BookDAO extends DAO {
 
     /**
      *
+     * !! не реализована сотрировка
      * @param author обьект автора
      * @param orderBy - столбец по которому выполнить сортировку (дефолтно = id автора, если будет что-то ложное)
      * @param asc 1 если asc, 2 если desc
      * @return
      */
     List<Book> getBookByAuthor(Author author, String orderBy, boolean asc);
+    List<Book> getBookByAuthor(Author author);
+
+    boolean updateAmount(int id, int amount);
+
 
 }

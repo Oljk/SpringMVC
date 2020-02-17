@@ -34,7 +34,7 @@ EXECUTE IMMEDIATE 'Create table Item (
 	parent_id NUMBER(10),
 	name Varchar2 (200),
 	type NUMBER(10) NOT NULL ,
-	desription Varchar2 (2000)
+	description Varchar2 (2000)
 )';
 EXECUTE IMMEDIATE 'Create table author_has_book (
 	author_id NUMBER(10) NOT NULL ,

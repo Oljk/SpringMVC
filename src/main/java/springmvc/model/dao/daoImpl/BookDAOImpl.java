@@ -22,13 +22,13 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public void connection() {
-        connection = DaoConnection.getConnection();
+        connection = DaoConnection.getInstance().getConnection();
     }
 
     @Override
     public void disconnection() {
         try {
-            DaoConnection.disconnection(preparedStatement, resultSet, connection);
+            DaoConnection.getInstance().disconnection(preparedStatement, resultSet, connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -41,9 +41,9 @@ public class BookDAOImpl implements BookDAO {
         try {
             preparedStatement = connection.prepareStatement("select \n" +
                     "item_id, amount, year, price, publishing_house" +
-                    "from" +
+                    " from" +
                     "  GOOD_ATTRS" +
-                    "where" +
+                    " where" +
                     "  item_id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
@@ -72,7 +72,6 @@ public class BookDAOImpl implements BookDAO {
                 book = parseBook(resultSet);
                 items.add(book);
             }
-            resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -83,6 +82,7 @@ public class BookDAOImpl implements BookDAO {
     @Override
     public List<Book> getBookByAuthor(Author author, String orderBy, boolean asc) {
         List<Book> listBook = new ArrayList<>();
+        connection();
         try {
             preparedStatement = connection.prepareStatement("select item_id \n" +
                     "from good_attr s" +
@@ -97,8 +97,31 @@ public class BookDAOImpl implements BookDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        disconnection();
         return listBook;
     }
+
+    public List<Book> getBookByAuthor(Author author) {
+        return getBookByAuthor(author, null, true);
+    }
+
+    @Override
+    public boolean updateAmount(int id, int amount) {
+        connection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("update GOOD_ATTRS set AMOUNT = ? where ITEM_ID = ?");
+            preparedStatement.setInt(2, id);
+            preparedStatement.setInt(1, amount);
+            boolean ok = preparedStatement.executeUpdate() > 0;
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        disconnection();
+        return false;
+    }
+
 
     private Book parseBook(ResultSet resultSet) {
         Book book = null;

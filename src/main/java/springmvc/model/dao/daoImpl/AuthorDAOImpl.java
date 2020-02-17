@@ -23,13 +23,13 @@ public class AuthorDAOImpl implements AuthorDAO {
         List<Author> authorList = new ArrayList<>();
         connection();
         try {
-            preparedStatement = connection.prepareStatement("select author_id\n" +
-                    "from author_has_book\n" +
-                    "where item_id = ?");
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = connection.prepareStatement("select author_id\n" +
+                    " from author_has_book\n" +
+                    " where item_id = ?");
             preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                int author_id = resultSet.getInt("AUTHOR_ID");
+                int author_id = resultSet.getInt(1);
                 Author author = (Author) getObjectById(author_id);
                 authorList.add(author);
             }
@@ -48,13 +48,13 @@ public class AuthorDAOImpl implements AuthorDAO {
 
     @Override
     public void connection() {
-        connection = DaoConnection.getConnection();
+        connection = DaoConnection.getInstance().getConnection();
     }
 
     @Override
     public void disconnection() {
         try {
-            DaoConnection.disconnection(preparedStatement, resultSet, connection);
+            DaoConnection.getInstance().disconnection(preparedStatement, resultSet, connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,11 +66,11 @@ public class AuthorDAOImpl implements AuthorDAO {
         connection();
         try {
             preparedStatement = connection.prepareStatement("select \n" +
-                    "author_id, name, surname, description" +
-                    "from" +
-                        "AUTHOR" +
-                    "where" +
-                        "author_id = ?");
+                    "author_id, name, surname, description\n" +
+                    "from " +
+                        " AUTHOR" +
+                    " where " +
+                        " author_id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
