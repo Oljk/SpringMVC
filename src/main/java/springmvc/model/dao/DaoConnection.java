@@ -102,4 +102,14 @@ public class DaoConnection {
                     connection.close();
                 }
     }
+
+    public void disconnection(ResultSet resultSet) {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

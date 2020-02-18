@@ -10,23 +10,11 @@ import java.sql.SQLException;
 
 public class UserDAOImpl implements UserDAO {
 
-    private Connection connection;
-    private PreparedStatement preparedStatement;
-    private ResultSet resultSet;
+    private final DaoConnection Dao = DaoConnection.getInstance();
 
-    @Override
-    public void connection() {
-        connection = DaoConnection.getInstance().getConnection();
-    }
-
-    @Override
-    public void disconnection() {
-        try {
-            DaoConnection.getInstance().disconnection(preparedStatement, resultSet, connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    private final String GET_LOGIN = "select login, password from users where login = ?";
+    private final String CHECK_REGISTR = "SELECT  1 from USERS where login = ?";
+    private final String INSERT_USER = "insert into users (user_id, name, surname, e_mail, password, login, phone_number) values (get_id.nextval, ?, ?, ?, ?, ?, ?)";
 
     @Override
     public Object getObjectById(int id) {
@@ -49,9 +37,9 @@ public class UserDAOImpl implements UserDAO {
         if (login == null || password == null) {
             return false;
         }
-        connection();
-        try {
-            preparedStatement = connection.prepareStatement("SELECT  LOGIN, PASSWORD from USERS where login = ?");
+        ResultSet resultSet = null;
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_LOGIN)) {
             preparedStatement.setString(1, login);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next())  {
@@ -59,8 +47,11 @@ public class UserDAOImpl implements UserDAO {
                     return true;
                 }
             }
-        } catch (SQLException e) {}
-        disconnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Dao.disconnection(resultSet);
+        }
         return true;
     }
 
@@ -74,29 +65,31 @@ public class UserDAOImpl implements UserDAO {
         if(!user.checkUser()) {
             return false;
         }
-        connection();
-        try {
-            preparedStatement = connection.prepareStatement("SELECT  1 from USERS where login = ?");
+        ResultSet resultSet = null;
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_REGISTR)) {
             preparedStatement.setString(1, user.getLogin().getLogin());
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next())  {
                 return false;
             }
-        } catch (SQLException e) {}
-        try {
-            preparedStatement = connection.prepareStatement("insert into users (user_id, name, surname, e_mail, password, login, phone_number) \n" +
-                    "values (get_id.nextval, ?, ?, ?, ?, ?, ?)");
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getSurname());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(4,user.getLogin().getPassword());
-            preparedStatement.setString(5, user.getLogin().getLogin());
-            preparedStatement.setString(6, user.getPhone_number());
-            preparedStatement.executeQuery();
-        } catch (SQLException e) {
 
+            try (PreparedStatement ps = connection.prepareStatement(INSERT_USER)) {
+                ps.setString(1, user.getName());
+                ps.setString(2, user.getSurname());
+                ps.setString(3, user.getEmail());
+                ps.setString(4,user.getLogin().getPassword());
+                ps.setString(5, user.getLogin().getLogin());
+                ps.setString(6, user.getPhone_number());
+                ps.executeQuery();
+            } catch (SQLException e) {
+                throw e;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Dao.disconnection(resultSet);
         }
-        disconnection();
         return false;
     }
 

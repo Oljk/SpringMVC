@@ -29,12 +29,12 @@ public class ListDAO implements DAO {
         logined.put("log1", new User(2 ,"hello", "mysurname", "09590", "kk@gmail.com", true, new Login ("log1", "pass")));
     }
 
-    @Override
+
     public void connection() {
 
     }
 
-    @Override
+
     public void disconnection() {
 
     }

@@ -1,7 +1,5 @@
 package springmvc.model.dao.daoImpl;
 
-
-
 import org.springframework.stereotype.Repository;
 import springmvc.model.dao.*;
 import springmvc.model.entities.*;
@@ -16,88 +14,70 @@ import java.util.List;
 @Repository
 public class BookDAOImpl implements BookDAO {
 
-    private Connection connection;
-    private PreparedStatement preparedStatement;
-    private ResultSet resultSet;
+    private final DaoConnection Dao = DaoConnection.getInstance();
 
-    @Override
-    public void connection() {
-        connection = DaoConnection.getInstance().getConnection();
-    }
-
-    @Override
-    public void disconnection() {
-        try {
-            DaoConnection.getInstance().disconnection(preparedStatement, resultSet, connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    private final String GET_OBJECT_BY_ID =
+            "select item_id, amount, year, price, publishing_house from GOOD_ATTRS where item_id = ?";
+    private final String GET_All_BOOKS = "select item_id, amount, year, price, publishing_house from GOOD_ATTRS";
+    private final String GET_BOOK_BY_AUTHOR = "select item_id from good_attr s where AUTHOR_ID = ?";
+    private final String UPDATE_BOOK_AMOUNT = "update GOOD_ATTRS set AMOUNT = ? where ITEM_ID = ?";
 
     @Override
     public Object getObjectById(int id) {
         Book book = null;
-        connection();
-        try {
-            preparedStatement = connection.prepareStatement("select \n" +
-                    "item_id, amount, year, price, publishing_house" +
-                    " from" +
-                    "  GOOD_ATTRS" +
-                    " where" +
-                    "  item_id = ?");
+        ResultSet resultSet = null;
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_OBJECT_BY_ID)) {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
             book = parseBook(resultSet);
+
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            Dao.disconnection(resultSet);
         }
-        disconnection();
         return book;
     }
-
 
     @Override
     public List<Book> getAllBooks() {
         List<Book> items = new ArrayList<>();
-        connection();
-        try {
-            resultSet = connection.createStatement().executeQuery("select" +
-                    " item_id, amount, year, price, publishing_house " +
-                    "from " +
-                    "GOOD_ATTRS");
+        ResultSet resultSet = null;
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_All_BOOKS)) {
+            resultSet = preparedStatement.executeQuery();
             Book book;
             while (resultSet.next()) {
-                System.out.println("hello");
                 book = parseBook(resultSet);
                 items.add(book);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            Dao.disconnection(resultSet);
         }
-        disconnection();
         return items;
     }
 
     @Override
     public List<Book> getBookByAuthor(Author author, String orderBy, boolean asc) {
         List<Book> listBook = new ArrayList<>();
-        connection();
-        try {
-            preparedStatement = connection.prepareStatement("select item_id \n" +
-                    "from good_attr s" +
-                    "where " +
-                    "AUTHOR_ID = ?");
+        ResultSet resultSet = null;
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_BOOK_BY_AUTHOR)) {
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int item_id = resultSet.getInt("ITEM_ID");
                 BookDAO bookDAO = new BookDAOImpl();
-                listBook.add((Book)bookDAO.getObjectById(item_id));
+                listBook.add((Book) bookDAO.getObjectById(item_id));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+           Dao.disconnection(resultSet);
         }
-        disconnection();
         return listBook;
     }
 
@@ -107,22 +87,16 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public boolean updateAmount(int id, int amount) {
-        connection();
-        try (PreparedStatement preparedStatement =  connection.prepareStatement("update GOOD_ATTRS set AMOUNT = ? where ITEM_ID = ?")) {
+        boolean ok = false;
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_AMOUNT)) {
             preparedStatement.setInt(2, id);
             preparedStatement.setInt(1, amount);
-            boolean ok = preparedStatement.executeUpdate() > 0;
+            ok = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                resultSet.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-        disconnection();
-        return false;
+        return ok;
     }
 
 
@@ -136,7 +110,7 @@ public class BookDAOImpl implements BookDAO {
             double price = resultSet.getDouble("PRICE");
             DAO itemDao = new ItemDAOImpl();
             AuthorDAO authorDAO = new AuthorDAOImpl();
-            Item bookItem = (Item)itemDao.getObjectById(item_id);
+            Item bookItem = (Item) itemDao.getObjectById(item_id);
             List<Author> authorList =  authorDAO.getAuthorsByBook(item_id);
             book = new Book(bookItem, year, price, amount, publishing_house, authorList);
         } catch (SQLException e) {

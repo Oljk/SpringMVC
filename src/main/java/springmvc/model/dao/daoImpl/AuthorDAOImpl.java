@@ -14,20 +14,19 @@ import java.util.List;
 
 public class AuthorDAOImpl implements AuthorDAO {
 
-    private Connection connection;
-    private PreparedStatement preparedStatement;
-    private ResultSet resultSet;
+    private final DaoConnection Dao = DaoConnection.getInstance();
+
+    private final String GET_AUTHORS_BY_BOOK = "select author_id from author_has_book where item_id = ?";
+    private final String GET_OBJECT_BY_ID = "select author_id, name, surname, description from AUTHOR where author_id = ?";
 
     @Override
     public List<Author> getAuthorsByBook(int id) {
+        ResultSet resultSet = null;
         List<Author> authorList = new ArrayList<>();
-        connection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select author_id\n" +
-                    " from author_has_book\n" +
-                    " where item_id = ?");
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_AUTHORS_BY_BOOK)) {
             preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int author_id = resultSet.getInt(1);
                 Author author = (Author) getObjectById(author_id);
@@ -35,8 +34,9 @@ public class AuthorDAOImpl implements AuthorDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            Dao.disconnection(resultSet);
         }
-        disconnection();
         return  authorList;
     }
 
@@ -46,39 +46,22 @@ public class AuthorDAOImpl implements AuthorDAO {
         return getAuthorsByBook(id);
     }
 
-    @Override
-    public void connection() {
-        connection = DaoConnection.getInstance().getConnection();
-    }
-
-    @Override
-    public void disconnection() {
-        try {
-            DaoConnection.getInstance().disconnection(preparedStatement, resultSet, connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public Object getObjectById(int id) {
         Author author = null;
-        connection();
-        try {
-            preparedStatement = connection.prepareStatement("select \n" +
-                    "author_id, name, surname, description\n" +
-                    "from " +
-                        " AUTHOR" +
-                    " where " +
-                        " author_id = ?");
+        ResultSet resultSet = null;
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_OBJECT_BY_ID)) {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
             author = parseAuthor(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            Dao.disconnection(resultSet);
         }
-        disconnection();
         return author;
     }
     private Author parseAuthor(ResultSet resultSet) {

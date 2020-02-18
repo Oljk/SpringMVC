@@ -8,16 +8,6 @@ import springmvc.model.entities.*;
 public class OrderDAOImpl implements OrderDAO {
 
     @Override
-    public void connection() {
-
-    }
-
-    @Override
-    public void disconnection() {
-
-    }
-
-    @Override
     public Object getObjectById(int id) {
         return null;
     }

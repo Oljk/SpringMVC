@@ -10,13 +10,14 @@ public class OrderServiceImpl implements OrderService {
     private BookDAO bookDAO;
 
     @Override
-    public void processOrder(int id, int quantity) {
-        Book bookbyId = (Book) bookDAO.getObjectById(id);
-        if(bookbyId.getAmount() - quantity <  0 ){
-            throw new IllegalArgumentException("Out of Stock. Available Units in stock" + bookbyId.getAmount());
+    public Book processOrder(int id, int quantity) {
+        Book BookById = (Book) bookDAO.getObjectById(id);
+        if(BookById.getAmount() - quantity <  0 ){
+            throw new IllegalArgumentException("Out of Stock. Available Units in stock" + BookById.getAmount());
         }
-        bookbyId.setAmount(bookbyId.getAmount() - quantity);
-        System.out.println(bookDAO.updateAmount(id,bookbyId.getAmount()) + "\n---------------------------------------------------------");
+        BookById.setAmount(BookById.getAmount() - quantity);
+        bookDAO.updateAmount(id,BookById.getAmount());
+        return BookById;
     }
 
 }

@@ -17,24 +17,25 @@ import java.util.List;
 
 public class ItemDAOImpl implements ItemDAO {
 
-    private Connection connection;
-    private PreparedStatement preparedStatement;
-    private ResultSet resultSet;
+    private final DaoConnection Dao = DaoConnection.getInstance();
+
 
     /**
      * пока неизвестно будем использовать или нет
      */
     private List<Item> Items;
 
+    private final String GET_ALL_ITEMS = "select item_id, parent_id, name, type, description from items";
+    private final String GET_THEMES = "select item_id, parent_id, name, type, description from  items where type = ?";
+    private final String GET_BOOKS = "select item_id, parent_id, name, type, description from items where type = ?";
+    private final String GET_OBJECT_BY_ID = "select item_id, parent_id, name, type, description from item where item_id = ?";
+
     @Override
     public List<Item> getAllItems() {
         List<Item> items = new ArrayList<>();
-        connection();
-        try {
-            preparedStatement = connection.prepareStatement("select \n" +
-                    "  item_id, parent_id, name, type, description \n" +
-                    "from \n" +
-                    "  items\n");
+        ResultSet resultSet = null;
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_ITEMS)) {
             resultSet = preparedStatement.executeQuery();
             Item item;
             while (resultSet.next()) {
@@ -43,21 +44,18 @@ public class ItemDAOImpl implements ItemDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            Dao.disconnection(resultSet);
         }
-        disconnection();
         return items;
     }
 
     @Override
     public List<Item> getThemes() {
         List<Item> items = new ArrayList<>();
-        connection();
-        try {
-            preparedStatement = connection.prepareStatement("select \n" +
-                    "  item_id, parent_id, name, type, description \n" +
-                    "from \n" +
-                    "  items\n" +
-                    "where type = ?;");
+        ResultSet resultSet = null;
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_THEMES)) {
             preparedStatement.setInt(1, ItemType.THEME);
             resultSet = preparedStatement.executeQuery();
             Item item;
@@ -67,21 +65,18 @@ public class ItemDAOImpl implements ItemDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            Dao.disconnection(resultSet);
         }
-        disconnection();
         return items;
     }
 
     @Override
     public List<Item> getBooks() {
         List<Item> items = new ArrayList<>();
-        connection();
-        try {
-            preparedStatement = connection.prepareStatement("select \n" +
-                    "  item_id, parent_id, name, type, description \n" +
-                    "from \n" +
-                    "  items\n" +
-                    "where type = ?;");
+        ResultSet resultSet = null;
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_BOOKS)) {
             preparedStatement.setInt(1, ItemType.BOOK);
             resultSet = preparedStatement.executeQuery();
             Item item;
@@ -91,44 +86,27 @@ public class ItemDAOImpl implements ItemDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            Dao.disconnection(resultSet);
         }
-        disconnection();
         return items;
-    }
-
-    @Override
-    public void connection() {
-        connection = DaoConnection.getInstance().getConnection();
-    }
-
-    @Override
-    public void disconnection() {
-        try {
-            DaoConnection.getInstance().disconnection(preparedStatement, resultSet, connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public Object getObjectById(int id) {
         Item item = null;
-        connection();
-        try {
-            preparedStatement = connection.prepareStatement("select \n" +
-                    "  item_id, parent_id, name, type, description \n" +
-                    "from \n" +
-                    "  item\n" +
-                    "where \n" +
-                    "  item_id = ?");
+        ResultSet resultSet = null;
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_OBJECT_BY_ID)) {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
             item = parseItem(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            Dao.disconnection(resultSet);
         }
-        disconnection();
         return item;
     }
 
