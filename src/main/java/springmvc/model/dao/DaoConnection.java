@@ -17,6 +17,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Locale;
 
 
@@ -49,10 +50,10 @@ public class DaoConnection {
             password = document.getElementsByTagName("password").item(0).getTextContent();
             if (!init) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("db/model.sql")));
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 String str;
                 while((str = bufferedReader.readLine())!= null) {
-                    sb.append(str + "\n");
+                    sb.append(str).append("\n");
                 }
                 String sql = sb.toString();
                 try {
@@ -64,7 +65,7 @@ public class DaoConnection {
                 }
             }
         } catch (SAXException | ParserConfigurationException | IOException e) {
-            logger.error("create connection: " + e.getMessage() +  " - "  + e.getStackTrace().toString());
+            logger.error("create connection: " + e.getMessage() +  " - "  + Arrays.toString(e.getStackTrace()));
             System.out.println("create conn" + e.getStackTrace().toString() + " - " + e.getMessage());
         }
         logger.trace("ceated connection");

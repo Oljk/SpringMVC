@@ -11,8 +11,12 @@ import springmvc.model.entities.Item;
 @Controller
 public class BookController {
 
+    private final BookDAO bookDAO;
+
     @Autowired
-    private BookDAO bookDAO;
+    public BookController(BookDAO bookDAO) {
+        this.bookDAO = bookDAO;
+    }
 
     @RequestMapping("/books")
     public String list(Model model) {
