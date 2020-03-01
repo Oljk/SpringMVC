@@ -29,10 +29,15 @@ public class ConfigurationDAO {
     public UserDAO getUserDao() {
         return new UserDAOImpl();
     }
-    /*
+
     @Bean
     public BookDAO getBookDao(){
         return new BookDAOImpl();
     }
-*/
+
+    @Bean
+    public CommonDAO getCommonDAO() {
+        return new CommonDAOImpl();
+    }
+
 }

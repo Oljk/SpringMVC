@@ -34,6 +34,12 @@
                     <p>${book.year}</p>
                     <p>${book.price} USD</p>
                     <p>Available ${book.amount} units in stock</p>
+                    <p>
+                        <a href="#" class="btn btn-warning btn-large"> <span
+                                class="glyphicon-shopping-cart glyphicon"></span> Order Now </a>
+                    </p>
+
+
                 </div>
             </div>
         </div>

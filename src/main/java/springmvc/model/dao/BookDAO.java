@@ -23,5 +23,6 @@ public interface BookDAO extends DAO {
 
     boolean updateAmount(int id, int amount);
 
+    boolean addBook(Book book);
 
 }

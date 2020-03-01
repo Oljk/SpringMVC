@@ -10,4 +10,5 @@ public interface ItemDAO extends DAO {
    List<Item> getAllItems();
    List<Item> getThemes();
    List<Item> getBooks();
+   int addItem(Item item);
 }

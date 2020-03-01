@@ -1,6 +1,7 @@
 package springmvc.model.dao.daoImpl;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import springmvc.model.entities.ItemType;
 import springmvc.model.dao.*;
@@ -19,6 +20,9 @@ public class ItemDAOImpl implements ItemDAO {
 
     private final DaoConnection Dao = DaoConnection.getInstance();
 
+    @Autowired
+    CommonDAO commonDAO;
+
 
     /**
      * пока неизвестно будем использовать или нет
@@ -29,6 +33,7 @@ public class ItemDAOImpl implements ItemDAO {
     private final String GET_THEMES = "select item_id, parent_id, name, type, description from  items where type = ?";
     private final String GET_BOOKS = "select item_id, parent_id, name, type, description from items where type = ?";
     private final String GET_OBJECT_BY_ID = "select item_id, parent_id, name, type, description from item where item_id = ?";
+    private final String CREATE_ITEM = "insert into items (item_id, parent_id, name, type, description ) values (?, ?, ?, ?, ?) ";
 
     @Override
     public List<Item> getAllItems() {
@@ -92,6 +97,25 @@ public class ItemDAOImpl implements ItemDAO {
         return items;
     }
 
+
+    @Override
+    public int addItem(Item item) {
+        int id = commonDAO.getId();
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_ITEM)) {
+             preparedStatement.setInt(1, id);
+             preparedStatement.setInt(2, item.getParent_id());
+             preparedStatement.setString(3, item.getName());
+             preparedStatement.setInt(4, item.getType().intValue());
+             preparedStatement.setString(5, item.getDescription());
+             int i = preparedStatement.executeUpdate();
+             if (i < 0) id = -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
     @Override
     public Object getObjectById(int id) {
         Item item = null;
@@ -128,4 +152,8 @@ public class ItemDAOImpl implements ItemDAO {
         }
         return item;
     }
+
+
+
+
 }

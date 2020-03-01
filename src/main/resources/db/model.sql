@@ -72,6 +72,8 @@ EXECUTE IMMEDIATE ' CREATE SEQUENCE get_id
 	NOCACHE
 	NOCYCLE';
 
+	CREATE INDEX autror_name_surn_idx ON Author(LOWER(name), LOWER(surname));
+
 EXCEPTION
 	when others then
 		dbms_output.put_line('exeption');

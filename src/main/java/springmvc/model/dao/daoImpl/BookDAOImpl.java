@@ -21,6 +21,7 @@ public class BookDAOImpl implements BookDAO {
     private final String GET_All_BOOKS = "select item_id, amount, year, price, publishing_house from GOOD_ATTRS";
     private final String GET_BOOK_BY_AUTHOR = "select item_id from good_attr s where AUTHOR_ID = ?";
     private final String UPDATE_BOOK_AMOUNT = "update GOOD_ATTRS set AMOUNT = ? where ITEM_ID = ?";
+    private final String INSERT_BOOK = "insert into Item ";
 
     @Override
     public Object getObjectById(int id) {
@@ -97,6 +98,11 @@ public class BookDAOImpl implements BookDAO {
             e.printStackTrace();
         }
         return ok;
+    }
+
+    @Override
+    public boolean addBook(Book book) {
+        return false;
     }
 
 
