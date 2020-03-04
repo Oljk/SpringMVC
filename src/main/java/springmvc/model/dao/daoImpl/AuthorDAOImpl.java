@@ -59,8 +59,8 @@ public class AuthorDAOImpl implements AuthorDAO {
         try (Connection connection = Dao.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_AUTHOR)) {
             preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, author.getName());
-            preparedStatement.setString(3, author.getSurname());
+            preparedStatement.setString(2, author.getName() == null?"":author.getName());
+            preparedStatement.setString(3, author.getSurname() == null?"":author.getSurname());
             preparedStatement.setString(4, author.getDescription());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -102,22 +102,23 @@ public class AuthorDAOImpl implements AuthorDAO {
         return author;
     }
 
-    int getAutorByNameSurn(String name, String surname) {
-       int id = -1;
-       ResultSet resultSet = null;
-        try (Connection connection = Dao.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_AUTHOR_ID)) {
-            preparedStatement.setString(1, name.trim().toLowerCase());
-            preparedStatement.setString(2, surname.trim().toLowerCase());
-            resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-           id = resultSet.getInt(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            Dao.disconnection(resultSet);
-        }
-        return id;
+   public int getAutorByNameSurn(String name, String surname) {
+        name = name == null?"":name;
+        surname = surname == null?"":surname;
+        int id = -1;
+        ResultSet resultSet = null;
+         try (Connection connection = Dao.getConnection();
+              PreparedStatement preparedStatement = connection.prepareStatement(GET_AUTHOR_ID)) {
+             preparedStatement.setString(1, name.trim().toLowerCase());
+             preparedStatement.setString(2, surname.trim().toLowerCase());
+             resultSet = preparedStatement.executeQuery();
+             if (resultSet.next())  id = resultSet.getInt(1);
+         } catch (SQLException e) {
+             e.printStackTrace();
+         } finally {
+             Dao.disconnection(resultSet);
+         }
+         return id;
     }
 
 }

@@ -18,4 +18,8 @@ public class ConfigurationServices {
         return new OrderServiceImpl();
     }
 
+    @Bean
+    public BookService getBookService() {
+        return new BookService();
+    }
 }

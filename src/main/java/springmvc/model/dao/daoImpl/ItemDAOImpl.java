@@ -29,11 +29,11 @@ public class ItemDAOImpl implements ItemDAO {
      */
     private List<Item> Items;
 
-    private final String GET_ALL_ITEMS = "select item_id, parent_id, name, type, description from items";
-    private final String GET_THEMES = "select item_id, parent_id, name, type, description from  items where type = ?";
-    private final String GET_BOOKS = "select item_id, parent_id, name, type, description from items where type = ?";
+    private final String GET_ALL_ITEMS = "select item_id, parent_id, name, type, description from item";
+    private final String GET_THEMES = "select item_id, parent_id, name, type, description from  item where type = ?";
+    private final String GET_BOOKS = "select item_id, parent_id, name, type, description from item where type = ?";
     private final String GET_OBJECT_BY_ID = "select item_id, parent_id, name, type, description from item where item_id = ?";
-    private final String CREATE_ITEM = "insert into items (item_id, parent_id, name, type, description ) values (?, ?, ?, ?, ?) ";
+    private final String CREATE_ITEM = "insert into item (item_id, parent_id, name, type, description ) values (?, ?, ?, ?, ?) ";
 
     @Override
     public List<Item> getAllItems() {
@@ -108,6 +108,7 @@ public class ItemDAOImpl implements ItemDAO {
              preparedStatement.setString(3, item.getName());
              preparedStatement.setInt(4, item.getType().intValue());
              preparedStatement.setString(5, item.getDescription());
+            System.out.println((preparedStatement).getParameterMetaData().getParameterCount() + " - " + preparedStatement.toString() + " - ");
              int i = preparedStatement.executeUpdate();
              if (i < 0) id = -1;
         } catch (SQLException e) {
@@ -152,8 +153,6 @@ public class ItemDAOImpl implements ItemDAO {
         }
         return item;
     }
-
-
 
 
 }

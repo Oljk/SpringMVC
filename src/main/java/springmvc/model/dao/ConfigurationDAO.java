@@ -30,10 +30,6 @@ public class ConfigurationDAO {
         return new UserDAOImpl();
     }
 
-    @Bean
-    public BookDAO getBookDao(){
-        return new BookDAOImpl();
-    }
 
     @Bean
     public CommonDAO getCommonDAO() {

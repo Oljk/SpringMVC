@@ -1,5 +1,7 @@
 package springmvc.model.dao.daoImpl;
 
+import oracle.jdbc.proxy.annotation.Pre;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import springmvc.model.dao.*;
 import springmvc.model.entities.*;
@@ -13,15 +15,19 @@ import java.util.List;
 
 @Repository
 public class BookDAOImpl implements BookDAO {
-
+    @Autowired
+    ItemDAO itemDAO;
+    @Autowired
+    AuthorDAO authorDAO;
     private final DaoConnection Dao = DaoConnection.getInstance();
 
     private final String GET_OBJECT_BY_ID =
             "select item_id, amount, year, price, publishing_house from GOOD_ATTRS where item_id = ?";
     private final String GET_All_BOOKS = "select item_id, amount, year, price, publishing_house from GOOD_ATTRS";
-    private final String GET_BOOK_BY_AUTHOR = "select item_id from good_attr s where AUTHOR_ID = ?";
+    private final String GET_BOOK_BY_AUTHOR = "select item_id from author_has_book where AUTHOR_ID = ?";
     private final String UPDATE_BOOK_AMOUNT = "update GOOD_ATTRS set AMOUNT = ? where ITEM_ID = ?";
-    private final String INSERT_BOOK = "insert into Item ";
+    private final String INSERT_BOOK = "insert into Good_attrs (item_id, amount, publishing_house, year, price) values (?, ?, ?, ?, ?)";
+    private final String CREATE_AUTH_HAS_BOOK = "insert into author_has_book (author_id, item_id) values (?,?)";
 
     @Override
     public Object getObjectById(int id) {
@@ -102,7 +108,30 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public boolean addBook(Book book) {
-        return false;
+        boolean ok =  false;
+        int item_id = itemDAO.addItem(book.getItem());
+        try (Connection connection = Dao.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_AUTH_HAS_BOOK);
+             PreparedStatement PsInsertBook = connection.prepareStatement(INSERT_BOOK)) { //(item_id, amount, publishing_house, year, price) values (?, ?, ?, ?, ?, ?)
+            PsInsertBook.setInt(1, item_id);
+            PsInsertBook.setInt(2, book.getAmount());
+            PsInsertBook.setString(3, book.getPublishing_house());
+            PsInsertBook.setInt(4, book.getYear());
+            PsInsertBook.setDouble(5, book.getPrice());
+            ok = PsInsertBook.executeUpdate() > 0;
+            for (Author author : book.getAuthors()) {
+                int author_id = authorDAO.getAutorByNameSurn(author.getName(), author.getSurname());
+                if (author_id < 0) {
+                    author_id = authorDAO.addAuthor(author);
+                }
+                preparedStatement.setInt(1, author_id);
+                preparedStatement.setInt(2, item_id);
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ok;
     }
 
 

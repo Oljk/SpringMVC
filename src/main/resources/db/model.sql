@@ -6,8 +6,8 @@ dbms_output.put_line('begin');
 EXECUTE IMMEDIATE 'create table users (
 	user_id NUMBER(10) PRIMARY KEY ,
 	name Varchar2 (30) NOT NULL ,
-	surname Varchar2 (30) NOT NULL ,
-	e_mail Varchar2 (30),
+	surname Varchar2 (200) NOT NULL ,
+	e_mail Varchar2 (100),
 	password Varchar2 (100) NOT NULL ,
 	login Varchar2 (20) NOT NULL ,
 	phone_number Varchar2 (20),
@@ -25,8 +25,8 @@ EXECUTE IMMEDIATE 'Create table Orders (
 )';
 EXECUTE IMMEDIATE 'Create table Author (
 	author_id NUMBER(10) PRIMARY KEY,
-	name Varchar2 (30),
-	surname Varchar2 (30),
+	name Varchar2 (200),
+	surname Varchar2 (200),
 	description Varchar2 (2000)
 )';
 EXECUTE IMMEDIATE 'Create table Item (
@@ -76,7 +76,7 @@ EXECUTE IMMEDIATE ' CREATE SEQUENCE get_id
 
 EXCEPTION
 	when others then
-		dbms_output.put_line('exeption');
+		dbms_output.put_line('exeption in creating model');
 
 end;
 
