@@ -45,19 +45,18 @@ public class BookController {
     }
 
     @RequestMapping(value = "/add ", method = {RequestMethod.POST})
-    @ResponseStatus(value= HttpStatus.OK)
-    public String processAddAuthorToForm(@ModelAttribute("newbook") Book newBook, @RequestParam("addsbmbutton") String param,
+    public String processAddAuthorToForm(@ModelAttribute("newbook") Book newBook,
                                          @ModelAttribute("authamount") EntityWrapper authamount, Model model) {
-        if ("addBookSbmit".equals(param)) {
+      /*  if ("addBookSbmit".equals(param)) {
             bookService.addBook(newBook);
             return "redirect:/books";
-        }else if ("addAuthorSbmit".equals(param)) {
+        }else if ("addAuthorSbmit".equals(param)) { */
             model.addAttribute("authamount", authamount.getIntValue());
             model.addAttribute("newbook", newBook);
             model.addAttribute("themes", bookService.getThemes());
             return "addBook";
-        }
-        return "books";
+      /*  }
+        return "books";*/
     }
 /*
 

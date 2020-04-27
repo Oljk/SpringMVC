@@ -1,6 +1,3 @@
-<%@ page import="springmvc.model.entities.Item" %>
-<%@ page import="org.springframework.web.bind.annotation.ModelAttribute" %>
-<%@ page import="springmvc.model.entities.Book" %>
 <%@ page import="springmvc.model.entities.ItemType" %><%--
   Created by IntelliJ IDEA.
   User: olly0418
@@ -28,7 +25,7 @@
     </div>
 </section>
 <section class="container">
-    <form:form  modelAttribute="newbook" class="form-horizontal" method="post">
+    <form:form  modelAttribute="newbook" class="form-horizontal">
         <form:input name="type"  path="item.type" type="hidden" value="<%=String.valueOf(ItemType.BOOK) %>" />
         <fieldset>
             <legend>Add new book</legend>
@@ -94,7 +91,10 @@
                     <form:input id="authname${i}" path="authors[${i}].name"   type="text" class="form:input-large" />
                 </div>
                 </c:forEach>
+                <form:form>
+
                 <input type="submit" id="btnAddAuth" class="btn btn-primary" name="addsbmbutton" value ="addAuthorSbmit"/>
+                </form:form>
             </div>
 
             <div class="form-group">

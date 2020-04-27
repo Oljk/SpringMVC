@@ -12,8 +12,6 @@ import java.nio.file.Path;
 @Configuration
 @ComponentScan(value = "springmvc.*")
 public class ApplicationContextConfig {
-
-
     @Bean(name = "viewResolver")
     public InternalResourceViewResolver getViewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
