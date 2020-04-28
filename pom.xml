@@ -114,11 +114,13 @@
             <version>${spring.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.oracle.jdbc</groupId>
-            <artifactId>ojdbc8</artifactId>
-            <version>18.3.0.0</version>
-        </dependency>
+		<!-- https://mvnrepository.com/artifact/com.oracle.jdbc/ojdbc8 -->
+		<dependency>
+			<groupId>com.oracle.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+			<version>12.2.0.1</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -150,6 +152,12 @@
 	</dependencies>
 
 	<repositories>
+		<repository>
+			<id>xwiki-externals</id>
+			<name>XWiki Externals Repository</name>
+			<url>https://maven.xwiki.org/externals/</url>
+		</repository>
+
 		<repository>
 			<id>springsource-milestones</id>
 			<name>SpringSource Milestones Proxy</name>

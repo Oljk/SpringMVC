@@ -39,22 +39,23 @@ public class BookController {
     public String addBookForm(Model model) {
         Book book = new Book();
         model.addAttribute("newbook", book);
-        model.addAttribute("authamount", new EntityWrapper(1));
+     //   model.addAttribute("authamount", new EntityWrapper(1));
         model.addAttribute("themes", bookService.getThemes());
         return "addBook";
     }
 
     @RequestMapping(value = "/add ", method = {RequestMethod.POST})
     public String processAddAuthorToForm(@ModelAttribute("newbook") Book newBook,
-                                         @ModelAttribute("authamount") EntityWrapper authamount, Model model) {
+                                         Model model) {
       /*  if ("addBookSbmit".equals(param)) {
             bookService.addBook(newBook);
             return "redirect:/books";
         }else if ("addAuthorSbmit".equals(param)) { */
-            model.addAttribute("authamount", authamount.getIntValue());
-            model.addAttribute("newbook", newBook);
-            model.addAttribute("themes", bookService.getThemes());
-            return "addBook";
+         //   model.addAttribute("authamount", authamount.getIntValue());
+          // model.addAttribute("newbook", newBook);
+        //    model.addAttribute("themes", bookService.getThemes());
+            bookService.addBook(newBook);
+            return "redirect:/books";
       /*  }
         return "books";*/
     }
