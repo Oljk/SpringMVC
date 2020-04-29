@@ -1,0 +1,17 @@
+           <div class="form-group">
+                <form:form modelAttribute="authamount" >
+                    <form:input name="type"  value="${authamount.intValue}" path="intValue" type="hidden" />
+                </form:form>
+
+                <c:forEach var = "i" begin = "1" end = "${authamount.intValue}">
+                <label class="control-label col-lg-2"
+                       for="authname${i}">Author</label>
+                <div class="col-lg-10">
+                    <form:input id="authname${i}" path="authors[${i}].name"   type="text" class="form:input-large" />
+                </div>
+                </c:forEach>
+                <form:form>
+
+                <input type="submit" id="btnAddAuth" class="btn btn-primary" name="addsbmbutton" value ="addAuthorSbmit"/>
+                </form:form>
+            </div>

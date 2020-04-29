@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import java.nio.file.Path;
 
 @Configuration
 @ComponentScan(value = "springmvc.*")
@@ -26,7 +25,4 @@ public class ApplicationContextConfig {
         messageSource.setBasename("/WEB-INF/classes/messages");
         return messageSource;
     }
-
-
-
 }

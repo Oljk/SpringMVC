@@ -34,19 +34,18 @@ public class BookController {
         model.addAttribute("books",bookDAO.getAllBooks());
         return "books";
     }
-
+/*
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addBookForm(Model model) {
         Book book = new Book();
         model.addAttribute("newbook", book);
      //   model.addAttribute("authamount", new EntityWrapper(1));
-        model.addAttribute("themes", bookService.getThemes());
-        return "addBook";
+     //   model.addAttribute("themes", bookService.getThemes());
+        return "addBookv2";
     }
 
-    @RequestMapping(value = "/add ", method = {RequestMethod.POST})
-    public String processAddAuthorToForm(@ModelAttribute("newbook") Book newBook,
-                                         Model model) {
+    @RequestMapping(value = "/add ", method = RequestMethod.POST)
+    public String processAddAuthorToForm(@ModelAttribute("newbook") Book newBook) {
       /*  if ("addBookSbmit".equals(param)) {
             bookService.addBook(newBook);
             return "redirect:/books";
@@ -54,11 +53,25 @@ public class BookController {
          //   model.addAttribute("authamount", authamount.getIntValue());
           // model.addAttribute("newbook", newBook);
         //    model.addAttribute("themes", bookService.getThemes());
-            bookService.addBook(newBook);
+         /*   bookService.addBook(newBook);
             return "redirect:/books";
-      /*  }
-        return "books";*/
+       }
+        return "books";
+    }*/
+
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String getAddNewBookForm(Model model) {
+        Book newBook = new Book();
+        model.addAttribute("newbook", newBook);
+        return "addBookv2";
     }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String processAddNewBookForm(@ModelAttribute("newbook")  Book newBook) {
+        bookService.addBook(newBook);
+        return "redirect:/books";
+    }
+
 /*
 
     @RequestMapping(value = "/add", params = {"addsbmbutton={addBookSbmit}"},   method = {RequestMethod.POST})

@@ -119,14 +119,16 @@ public class BookDAOImpl implements BookDAO {
             PsInsertBook.setInt(4, book.getYear());
             PsInsertBook.setDouble(5, book.getPrice());
             ok = PsInsertBook.executeUpdate() > 0;
-            for (Author author : book.getAuthors()) {
-                int author_id = authorDAO.getAutorByNameSurn(author.getName(), author.getSurname());
-                if (author_id < 0) {
-                    author_id = authorDAO.addAuthor(author);
+            if (book.getAuthors() != null) {
+                for (Author author : book.getAuthors()) {
+                    int author_id = authorDAO.getAutorByNameSurn(author.getName(), author.getSurname());
+                    if (author_id < 0) {
+                        author_id = authorDAO.addAuthor(author);
+                    }
+                    preparedStatement.setInt(1, author_id);
+                    preparedStatement.setInt(2, item_id);
+                    preparedStatement.executeUpdate();
                 }
-                preparedStatement.setInt(1, author_id);
-                preparedStatement.setInt(2, item_id);
-                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@page  contentType="text/html;charset=utf-8" pageEncoding="UTF-8" %>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%request.setCharacterEncoding("UTF-8");%>
@@ -33,15 +32,14 @@
                 <label class="control-label col-lg-2 col-lg-2"
                        for="itemname">Name</label>
                 <div class="col-lg-10">
-                    <form:input id="itemname" path="item.name" type="text" value="${item.name}"  class="form:input-large"/>
+                    <form:input id="itemname" path="item.name" type="text" class="form:input-large"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-lg-2 col-lg-2"
                        for="amount">Name</label>
                 <div class="col-lg-10">
-                    <form:input id="amount" path="amount" type="text" value="${amount}"
-                                class="form:input-large"/>
+                    <form:input id="amount" path="amount" type="text" class="form:input-large"/>
                 </div>
             </div>
 
@@ -67,7 +65,7 @@
                        for="price">Price</label>
                 <div class="col-lg-10">
                     <form:input id="price" path="price" type="number"  min="0" value="0" step="0.1"
-                                class="form:input-large" required/>
+                                class="form:input-large" required />
                 </div>
             </div>
 
@@ -79,31 +77,14 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <form:form modelAttribute="authamount" >
-                    <form:input name="type"  value="${authamount.intValue}" path="intValue" type="hidden" />
-                </form:form>
 
-                <c:forEach var = "i" begin = "1" end = "${authamount.intValue}">
-                <label class="control-label col-lg-2"
-                       for="authname${i}">Author</label>
-                <div class="col-lg-10">
-                    <form:input id="authname${i}" path="authors[${i}].name"   type="text" class="form:input-large" />
-                </div>
-                </c:forEach>
-                <form:form>
-
-                <input type="submit" id="btnAddAuth" class="btn btn-primary" name="addsbmbutton" value ="addAuthorSbmit"/>
-                </form:form>
-            </div>
 
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
-                    <input type="submit" id="btnAdd" class="btn btn-primary" name="addsbmbutton" value ="addBookSbmit"/>
+                    <input type="submit" id="btnAdd" class="btn btn-primary" name="addsbmbutton" value = "Add"/>
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     </form:form>
 </section>
 </body>
