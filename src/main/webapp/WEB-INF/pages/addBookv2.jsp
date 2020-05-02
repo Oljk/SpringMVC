@@ -33,12 +33,43 @@
                     <form:input id="productId" path="item.name" type="text"    class="form:input-large"/>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="control-label col-lg-2 col-lg-2"
+                       for="amount">Amount</label>
+                <div class="col-lg-10">
+                    <form:input id="amount" path="amount" type="text" class="form:input-large"/>
+                </div>
+            </div>
             <form:input name="type"  path="item.type" type="hidden" value="<%=String.valueOf(ItemType.BOOK) %>" />
             <div class="form-group">
                 <label class="control-label col-lg-2"
-                       for="publishing_house">publishing_house</label>
+                       for="publishing_house">Publishing house</label>
                 <div class="col-lg-10">
-                    <form:textarea id="publishing_house" path="publishing_house" rows = "2"/>
+                    <form:input id="publishing_house" path="publishing_house" type="text" class="form:input-large"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-lg-2 col-lg-2"
+                       for="year">Year</label>
+                <div class="col-lg-10">
+                    <form:input id="year" path="year" type="text" class="form:input-large"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-lg-2 col-lg-2"
+                       for="price">Price</label>
+                <div class="col-lg-10">
+                    <form:input id="price" path="price" type="number"  min="0" value="0" step="0.1"
+                                class="form:input-large" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-2"
+                       for="description">Description</label>
+                <div class="col-lg-10">
+                    <form:textarea id="description" path="item.description" rows = "2"/>
                 </div>
             </div>
 

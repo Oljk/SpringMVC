@@ -47,8 +47,7 @@
                 <label class="control-label col-lg-2 col-lg-2"
                        for="year">Year</label>
                 <div class="col-lg-10">
-                    <form:input id="year" path="year" type="text"
-                                class="form:input-large"/>
+                    <form:input id="year" path="year" type="text" class="form:input-large"/>
                 </div>
             </div>
 
