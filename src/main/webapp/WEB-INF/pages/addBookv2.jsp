@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -28,7 +29,7 @@
         <fieldset>
             <legend>Add new book v2</legend>
             <div class="form-group">
-                <label class="control-label col-lg-2 col-lg-2"  for="productId">Name</label>
+                <label class="control-label col-lg-2 col-lg-2"  for="productId"><spring:message code="addBook.form.Bookname.label"/></label>
                 <div class="col-lg-10">
                     <form:input id="productId" path="item.name" type="text"    class="form:input-large"/>
                 </div>
