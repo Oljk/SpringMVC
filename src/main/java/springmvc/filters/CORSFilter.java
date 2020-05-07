@@ -1,5 +1,8 @@
 package springmvc.filters;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.filter.DelegatingFilterProxy;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -11,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebFilter("/*")
-public class CORSFilter implements Filter {
+public class CORSFilter extends DelegatingFilterProxy implements Filter {
+
+    private FilterConfig filterConfig;
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -26,7 +31,9 @@ public class CORSFilter implements Filter {
         chain.doFilter(req, response);
     }
 
-    public void init(FilterConfig filterConfig) {}
+    public void init() {
+        init();
+    }
 
     public void destroy() {}
 

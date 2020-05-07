@@ -19,6 +19,29 @@ import org.springframework.ui.Model;
 @Controller
 public class LoginController {
 
+    /**
+     * methods for tests change!
+     * */
+
+    @RequestMapping(value="/login", method = RequestMethod.GET)
+    public String login() {
+        return "login";
+    }
+
+    @RequestMapping(value="/loginfailed", method = RequestMethod.GET)
+    public String loginerror(Model model) {
+        model.addAttribute("error", "true");
+        return "login";
+    }
+
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public String logout(Model model) {
+        return "login";
+    }
+
+  /*
+  other sh. methods.
+   */
     @RequestMapping("/index")
     public String listContacts(Map<String, Object> map) {
         User u = new User();
@@ -29,15 +52,7 @@ public class LoginController {
         return "login";
     }
 
-    @RequestMapping(value="/loginfailed", method = RequestMethod.GET)
-    public String loginerror(Model model) {
-        model.addAttribute("error", "true");
-        return "login";
-    }
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logout(Model model) {
-        return "login";
-    }
+
 
 
 
