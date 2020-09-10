@@ -13,7 +13,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter("/*")
+// @WebFilter("/*")
 public class CORSFilter extends DelegatingFilterProxy implements Filter {
 
     private FilterConfig filterConfig;
