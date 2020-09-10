@@ -99,6 +99,10 @@ public class Book {
         return Objects.hash(item, year, price, amount, publishing_house, authors);
     }
 
+    public boolean isEmpty() {
+        return item != null ? false : true;
+    }
+
     @Override
     public String toString() {
         return "Book{" +

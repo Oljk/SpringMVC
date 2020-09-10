@@ -70,8 +70,13 @@ public class BookController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String processAddNewBookForm(@ModelAttribute("newbook")  Book newBook) {
-        bookService.addBook(newBook);
-        return "redirect:/books";
+        if (newBook == null || newBook.isEmpty()) {
+            return "addBookv2";
+        } else {
+            bookService.addBook(newBook);
+        }
+            return "redirect:/books";
+
     }
 
     /**

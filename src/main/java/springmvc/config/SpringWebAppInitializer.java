@@ -10,12 +10,14 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
+import springmvc.listeners.ContextListener;
 
 public class SpringWebAppInitializer implements WebApplicationInitializer {
 
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
         appContext.register(ApplicationContextConfig.class);
+        appContext.register(SecurityConfig.class);
 
         // Dispatcher Servlet
 
@@ -25,8 +27,10 @@ public class SpringWebAppInitializer implements WebApplicationInitializer {
         dispatcher.addMapping("/");
 
         dispatcher.setInitParameter("contextClass", appContext.getClass().getName());
+        dispatcher.setInitParameter("contextConfigLocation", "springmvc" );
 
-        servletContext.addListener(new ContextLoaderListener(appContext));
+        System.out.println("-----------------------------------version 5 --------------------------------------");
+        servletContext.addListener(new ContextListener(appContext));
 
         // UTF8 Charactor Filter.
         FilterRegistration.Dynamic fr = servletContext.addFilter("encodingFilter", CharacterEncodingFilter.class);

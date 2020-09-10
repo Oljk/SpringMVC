@@ -79,6 +79,7 @@
                     <input type="submit" id="btnAdd" class="btn btn-primary" value ="Add"/>
                 </div>
             </div>
+            <a href="<c:url value="/logout" />" class="btn btndanger btn-mini pull-right">logout</a>
         </fieldset>
     </form:form>
 </section>
