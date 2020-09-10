@@ -24,7 +24,7 @@
 		<spring.version>5.1.0.RELEASE</spring.version>
 		<cglib.version>2.2.2</cglib.version>
         <querydsl.version>3.6.0</querydsl.version>
-		<spring.security>5.3.1.RELEASE</spring.security>
+		<spring.security>5.4.0</spring.security>
 	</properties>
 
 
