@@ -2,6 +2,7 @@ package springmvc.model.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -22,7 +23,7 @@ import java.util.Locale;
 
 
 @Service
-public class DaoConnection {
+public class DaoConnection extends DriverManagerDataSource {
 
     private static Logger logger = LoggerFactory.getLogger(DaoConnection.class);
 
@@ -64,11 +65,15 @@ public class DaoConnection {
                     logger.warn("init db: " + e.getSQLState() + e.getStackTrace().toString());
                 }
             }
+            this.setDriverClassName(className);
+            this.setUrl(url);
+            this.setUsername(user);
+            this.setPassword(password);
         } catch (SAXException | ParserConfigurationException | IOException e) {
             logger.error("create connection: " + e.getMessage() +  " - "  + Arrays.toString(e.getStackTrace()));
             System.out.println("create conn" + e.getStackTrace().toString() + " - " + e.getMessage());
         }
-        logger.trace("ceated connection");
+        logger.trace("crated connection");
     }
 
     public Connection getConnection() {
@@ -77,6 +82,7 @@ public class DaoConnection {
             Class.forName(className);
             Locale.setDefault(Locale.ENGLISH);
             connection = DriverManager.getConnection(url, user,password);
+         //   connection = this.getConnection();
             if (connection.isClosed()) {
                 logger.warn("Connection error");
                 System.out.println("connectio error");

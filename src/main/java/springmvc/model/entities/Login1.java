@@ -1,12 +1,15 @@
 package springmvc.model.entities;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
 
-
-public class Login {
+public class Login1 {
 
     @NotNull(message="is required")
     private String login;
@@ -14,16 +17,16 @@ public class Login {
     @Size(min = 6, max = 15, message="min = 6, max = 15")
     private String password;
 
-    public Login(){}
+    public Login1(){}
 
-    public Login(String login, String password) {
+    public Login1(String login, String password) {
         this.login = login;
-        this.password = password;
+        this.password = passwordEncoder().encode(password);
     }
 
-    public Login(User user) {
-        login = user.getLogin().login;
-        password = user.getLogin().getPassword();
+    public Login1(User user) {
+        login = user.getLogin();
+        password = user.getPassword();
     }
 
     public String getLogin() {
@@ -39,25 +42,16 @@ public class Login {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = passwordEncoder().encode(password);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Login login1 = (Login) o;
-        return Objects.equals(login, login1.login) &&
-                Objects.equals(password, login1.password);
-    }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(login, password);
-    }
 
     public boolean checkLogin() {
         return !this.login.isEmpty() && !this.password.isEmpty();
+    }
+
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

@@ -9,6 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -16,6 +17,9 @@
     <title>AddBooks v2</title>
 </head>
 <body>
+<sec:authorize access="hasRole('ADMIN')">
+    for admin only
+</sec:authorize>
 <section>
     <div class="jumbotron">
         <div class="container">
@@ -41,7 +45,6 @@
                     <form:input id="amount" path="amount" type="text" class="form:input-large"/>
                 </div>
             </div>
-            <form:input name="type"  path="item.type" type="hidden" value="<%=String.valueOf(ItemType.BOOK) %>" />
             <div class="form-group">
                 <label class="control-label col-lg-2"
                        for="publishing_house">Publishing house</label>
@@ -83,5 +86,13 @@
         </fieldset>
     </form:form>
 </section>
+
+<sec:authorize access="!isAuthenticated()">
+    Please login  <a href="<c:url value="/login" />" class="btn btndanger btn-mini pull-right">logout</a>
+</sec:authorize>
+<sec:authorize access="isAuthenticated()">
+    logout  <a href="<c:url value="/logout" />" class="btn btndanger btn-mini pull-right">logout</a>
+</sec:authorize>
+kek
 </body>
 </html>

@@ -3,7 +3,6 @@ package springmvc.model.dao;
 import springmvc.model.entities.*;
 
 public interface UserDAO extends DAO {
-    Login getLoginByLogin(String login);
     User getUserByLogin(String login);
 
     /**
@@ -18,5 +17,5 @@ public interface UserDAO extends DAO {
      */
     boolean registr(User user);
 
-    boolean login(Login login);
+    boolean login(User login);
 }

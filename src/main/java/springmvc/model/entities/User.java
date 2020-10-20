@@ -1,19 +1,35 @@
 package springmvc.model.entities;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import springmvc.model.dao.DaoConnection;
+import springmvc.model.dao.UserDAO;
+
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
 public class User {
+    @Id
     private int user_id;
     private String name;
-    private String surname;
+    private String surname = "default";
     private String phone_number;
     private String email;
     private boolean isAdmin;
-    private Login login;
 
-    public User(int user_id, String name, String surname, String phone_number, String email, boolean isAdmin, Login login) {
+    @NotNull(message="is required")
+    private String login;
+
+    @Size(min = 6, max = 15, message="min = 6, max = 15")
+    private String password;
+
+
+    public User(int user_id, String name, String surname, String phone_number, String email, boolean isAdmin, String login, String password) {
         this.user_id = user_id;
         this.name = name;
         this.surname = surname;
@@ -21,16 +37,18 @@ public class User {
         this.email = email;
         this.isAdmin = isAdmin;
         this.login = login;
+        this.password = passwordEncoder().encode(password);
     }
+
 
     public User() {
     }
 
     public boolean checkUser() {
-        if (this.name == null || "".equals(this.name) || this.surname == null ||  "".equals(this.surname) || this.login == null) {
+        if (this.name == null || "".equals(this.name) /*||  this.surname == null ||  "".equals(this.surname) */ || this.login == null) {
             return false;
         }
-        return this.login.checkLogin();
+        return this.checkLogin();
     }
 
     public int getUser_id() {
@@ -81,12 +99,20 @@ public class User {
         isAdmin = admin;
     }
 
-    public Login getLogin() {
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getLogin() {
         return login;
     }
 
-    public void setLogin(Login login) {
-        this.login = login;
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password =  passwordEncoder().encode(password);
     }
 
     @Override
@@ -120,4 +146,14 @@ public class User {
                 ", login=" + login +
                 '}';
     }
+
+
+    public boolean checkLogin() {
+        return !this.login.isEmpty() && !this.password.isEmpty();
+    }
+
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }

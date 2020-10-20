@@ -26,7 +26,7 @@ public class ListDAO implements DAO {
         booksHasAuthors.put(1, list);
         books = new ArrayList<>();
         authors.put(1, new Author(1,"author", "surname", "about"));
-        logined.put("log1", new User(2 ,"hello", "mysurname", "09590", "kk@gmail.com", true, new Login ("log1", "pass")));
+        logined.put("log1", new User(2 ,"hello", "mysurname", "09590", "kk@gmail.com", true, "log1", "pass"));
     }
 
 
@@ -44,9 +44,9 @@ public class ListDAO implements DAO {
         return null;
     }
 
-    public boolean login(Login login) {
+    public boolean login(User login) {
         if (logined.containsKey(login.getLogin())) {
-            Login buf = new Login(logined.get(login.getLogin()));
+            User buf = logined.get(login.getLogin());
             return buf.equals(login);
         }
         return false;
@@ -54,7 +54,7 @@ public class ListDAO implements DAO {
 
     public boolean register(User user) {
         if (!logined.containsKey(user.getLogin())) {
-            logined.put(user.getLogin().getLogin(), user);
+            logined.put(user.getLogin(), user);
             return true;
         }
         return false;

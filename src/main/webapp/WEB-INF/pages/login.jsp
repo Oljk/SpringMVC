@@ -51,7 +51,7 @@
                                 <spring:message code="login.badCred.label"/><br />
                             </div>
                         </c:if>
-                        <form action="<c:url value= "/login"></c:url>" method="post">
+                        <form action=${contextPath}/j_spring_security_check method="post">
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="User Name"
@@ -64,10 +64,11 @@
                                 <input class="btn btn-lg btn-success btn-block"
                                        type="submit" value="Login">
                             </fieldset>
+                            <input type="hidden" name="${__csrf.parameterName}"  value="${__csrf.token}"/>
                         </form>
                     </div>
                 </div>
-            </div>
+        </div>
         </div>
     </div>
 

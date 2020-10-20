@@ -21,10 +21,6 @@ public class UserDAOImpl implements UserDAO {
         return null;
     }
 
-    @Override
-    public Login getLoginByLogin(String login) {
-        return null;
-    }
 
     @Override
     public User getUserByLogin(String login) {
@@ -56,7 +52,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean login(Login login) {
+    public boolean login(User login) {
         return login.checkLogin() && login(login.getLogin(), login.getPassword());
     }
 
@@ -68,7 +64,7 @@ public class UserDAOImpl implements UserDAO {
         ResultSet resultSet = null;
         try (Connection connection = Dao.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CHECK_REGISTR)) {
-            preparedStatement.setString(1, user.getLogin().getLogin());
+            preparedStatement.setString(1, user.getLogin());
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next())  {
                 return false;
@@ -78,8 +74,8 @@ public class UserDAOImpl implements UserDAO {
                 ps.setString(1, user.getName());
                 ps.setString(2, user.getSurname());
                 ps.setString(3, user.getEmail());
-                ps.setString(4,user.getLogin().getPassword());
-                ps.setString(5, user.getLogin().getLogin());
+                ps.setString(4,user.getPassword());
+                ps.setString(5, user.getLogin());
                 ps.setString(6, user.getPhone_number());
                 ps.executeQuery();
             } catch (SQLException e) {
@@ -92,6 +88,8 @@ public class UserDAOImpl implements UserDAO {
         }
         return false;
     }
+
+
 
 
 }

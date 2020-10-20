@@ -24,7 +24,8 @@
 		<spring.version>5.1.0.RELEASE</spring.version>
 		<cglib.version>2.2.2</cglib.version>
         <querydsl.version>3.6.0</querydsl.version>
-		<spring.security>5.3.1.RELEASE</spring.security>
+		<spring.security>5.3.3.RELEASE</spring.security>
+		<spring.security.upper>5.3.3.RELEASE</spring.security.upper>
 	</properties>
 
 
@@ -116,6 +117,11 @@
             <artifactId>spring-security-config</artifactId>
             <version>${spring.security}</version>
         </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${spring.security}</version>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.oracle.jdbc/ojdbc8 -->
 		<dependency>
