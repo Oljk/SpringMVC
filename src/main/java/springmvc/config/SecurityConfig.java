@@ -67,6 +67,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                .and().httpBasic();
 */
+        http.csrf()
+                .disable()
+                .authorizeRequests()
+                .antMatchers("/resources/**", "/**").permitAll()
+                .anyRequest().permitAll()
+                .and();
+
+        http.formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/j_spring_security_check")
+                .defaultSuccessUrl("/books")
+                .failureUrl("/login-error")
+                .usernameParameter("j_username")
+                .passwordParameter("j_password")
+                .permitAll();
+
+        http.logout()
+                .permitAll()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/index")
+                .invalidateHttpSession(true);
+        /*
+
         http.authorizeRequests()
                 .antMatchers("/add/* ").access("hasRole('ADMIN')")
                 .and()
@@ -77,13 +100,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 .and()
-                .csrf();
+                .csrf(); */
 
       /*  http.authorizeRequests().antMatchers("/books").access("hasRole('USER')")
                 .antMatchers("/add").hasRole("ADMIN").and().
                 formLogin().loginPage("/login").permitAll().and().logout().logoutUrl("/logout");*/
         System.out.println("----------------------------------------------------------------------------");
-        System.out.println("                                     VERSION    14                          ");
+        System.out.println("                                     VERSION    15                          ");
         System.out.println("----------------------------------------------------------------------------");
     }
     @Bean

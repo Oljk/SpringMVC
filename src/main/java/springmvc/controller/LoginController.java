@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -14,7 +13,6 @@ import springmvc.model.Roles;
 import springmvc.model.dao.ConfigurationDAO;
 import springmvc.model.entities.*;
 
-import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -32,8 +30,13 @@ public class LoginController {
      * methods for tests change!
      * */
 
-    @RequestMapping(value="/login", method = RequestMethod.GET)
-    public String login(Model model, String error, String logout) {
+    //@RequestMapping(value="/login", method = RequestMethod.GET)
+    public String login() {
+        return "login";
+    }
+
+  //  @RequestMapping(value="/login", method = RequestMethod.POST)
+    public String loginPost(Model model, String error, String logout) {
         if (error != null)
             model.addAttribute("error", "Your username and password is invalid.");
         if (logout != null)
@@ -42,7 +45,7 @@ public class LoginController {
 
 
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            return "login";
+            return "login1";
         } else {
             for (GrantedAuthority auth : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
                 if (Roles.ROLE_ADMIN.equals(auth.getAuthority())) {
@@ -73,7 +76,7 @@ public class LoginController {
         map.put("user", u);
         map.put("login", u.getLogin());
         map.put("contactList", (new ConfigurationDAO()).getUserDao().getUserByLogin("User1Sur"));
-        return "login";
+        return "login1";
     }
 
     @InitBinder
@@ -96,7 +99,7 @@ public void getRegister(Model model) {
         user.setPassword(req.getParameter("Password"));
         user.setLogin(req.getParameter("Login"));
         userService.addUser(user);
-        return "login";
+        return "login1";
     }
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registerGet(Model model, HttpServletRequest req) {

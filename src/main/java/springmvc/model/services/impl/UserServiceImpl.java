@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(String login) {
-        return null;
+        return userDAO.getUserByLogin(login);
     }
 
     @Override
