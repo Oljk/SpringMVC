@@ -37,8 +37,8 @@ public class User {
         this.email = email;
         this.isAdmin = isAdmin;
         this.login = login;
-        this.password = passwordEncoder().encode(password);
-     //   this.password = password;
+      //  this.password = passwordEncoder().encode(password);
+        this.password = password;
     }
 
 
@@ -113,7 +113,8 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password =  passwordEncoder().encode(password);
+     //   this.password =  passwordEncoder().encode(password);
+        this.password = password;
     }
 
     @Override

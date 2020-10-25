@@ -111,8 +111,8 @@ public void getRegister(Model model) {
         User user =  new User();
         user.setEmail(req.getParameter("Email"));
         user.setName(req.getParameter("Name"));
-        user.setPhone_number("Phonenumber");
-        user.setPassword(req.getParameter("Password"));
+        user.setPhone_number(req.getParameter("Phonenumber"));
+        user.setPassword(user.passwordEncoder().encode(req.getParameter("Password")));
         user.setLogin(req.getParameter("Login"));
         userService.addUser(user);
         return "login";
