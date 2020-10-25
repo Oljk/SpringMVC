@@ -38,6 +38,7 @@ public class User {
         this.isAdmin = isAdmin;
         this.login = login;
         this.password = passwordEncoder().encode(password);
+     //   this.password = password;
     }
 
 

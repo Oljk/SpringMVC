@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/**").permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest().permitAll()
                 .and();
 
@@ -106,7 +106,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/add").hasRole("ADMIN").and().
                 formLogin().loginPage("/login").permitAll().and().logout().logoutUrl("/logout");*/
         System.out.println("----------------------------------------------------------------------------");
-        System.out.println("                                     VERSION    15                          ");
+        System.out.println("                                     VERSION    16                          ");
         System.out.println("----------------------------------------------------------------------------");
     }
     @Bean

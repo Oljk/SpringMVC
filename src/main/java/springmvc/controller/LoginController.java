@@ -2,7 +2,9 @@ package springmvc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -14,6 +16,8 @@ import springmvc.model.dao.ConfigurationDAO;
 import springmvc.model.entities.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 import org.springframework.ui.Model;
@@ -30,9 +34,20 @@ public class LoginController {
      * methods for tests change!
      * */
 
-    //@RequestMapping(value="/login", method = RequestMethod.GET)
+    @RequestMapping(value="/login", method = RequestMethod.GET)
     public String login() {
+      /*  SecurityContext context = SecurityContextHolder.getContext();
+        Authentication auth0 = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> list = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        for(GrantedAuthority auth : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+             String role = auth.getAuthority();
+            System.out.println(role);
+        }*/
         return "login";
+    }
+    @RequestMapping(value="/login-error")
+    public String loginError() {
+        return "login_error";
     }
 
   //  @RequestMapping(value="/login", method = RequestMethod.POST)
@@ -45,7 +60,7 @@ public class LoginController {
 
 
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            return "login1";
+            return "login";
         } else {
             for (GrantedAuthority auth : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
                 if (Roles.ROLE_ADMIN.equals(auth.getAuthority())) {
@@ -56,8 +71,9 @@ public class LoginController {
         return "login";
     }
 
-  //  @RequestMapping(value="/loginfailed", method = RequestMethod.GET)
+    //@RequestMapping(value="/loginfailed", method = RequestMethod.GET)
     public String loginerror(Model model) {
+
         model.addAttribute("error", "true");
         return "login";
     }
@@ -99,7 +115,7 @@ public void getRegister(Model model) {
         user.setPassword(req.getParameter("Password"));
         user.setLogin(req.getParameter("Login"));
         userService.addUser(user);
-        return "login1";
+        return "login";
     }
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registerGet(Model model, HttpServletRequest req) {
