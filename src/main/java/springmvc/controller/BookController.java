@@ -3,6 +3,8 @@ package springmvc.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -12,14 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import springmvc.model.Roles;
 import springmvc.model.dao.BookDAO;
 import springmvc.model.entities.Book;
 import springmvc.model.entities.EntityWrapper;
 import springmvc.model.entities.Item;
 import springmvc.model.entities.ItemType;
 import springmvc.model.services.BookService;
-
 @Controller
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class BookController {
 
     private final BookDAO bookDAO;
@@ -62,14 +65,16 @@ public class BookController {
         return "books";
     }*/
 
+   // @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String getAddNewBookForm(Model model) {
         Book newBook = new Book();
         model.addAttribute("newbook", newBook);
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         return "addBookv2";
     }
 
-    @PreAuthorize("ROLE_ADMIN")
+ //   @PreAuthorize("hasRole(Roles.ROLE_ADMIN)")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String processAddNewBookForm(@ModelAttribute("newbook")  Book newBook) {
         if (newBook == null || newBook.isEmpty()) {
@@ -79,7 +84,6 @@ public class BookController {
             bookService.addBook(newBook);
         }
             return "redirect:/books";
-
     }
 
     /**

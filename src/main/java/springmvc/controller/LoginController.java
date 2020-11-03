@@ -15,6 +15,7 @@ import springmvc.model.Roles;
 import springmvc.model.dao.ConfigurationDAO;
 import springmvc.model.entities.*;
 
+import javax.management.relation.Role;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,17 +37,20 @@ public class LoginController {
 
     @RequestMapping(value="/login", method = RequestMethod.GET)
     public String login() {
-      /*  SecurityContext context = SecurityContextHolder.getContext();
-        Authentication auth0 = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> list = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         for(GrantedAuthority auth : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
              String role = auth.getAuthority();
-            System.out.println(role);
-        }*/
+             if (Roles.ROLE_ANONYMOUS.equals(role)) {
+                 return "login";
+             } else {
+                 return "redirect:/cabinet";
+             }
+        }
         return "login";
     }
     @RequestMapping(value="/login-error")
-    public String loginError() {
+    public String loginError(Model model) {
+        model.addAttribute("error", "true");
         return "login_error";
     }
 
