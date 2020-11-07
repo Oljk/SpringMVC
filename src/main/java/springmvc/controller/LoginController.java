@@ -55,6 +55,7 @@ public class LoginController {
     }
 
   //  @RequestMapping(value="/login", method = RequestMethod.POST)
+    /*
     public String loginPost(Model model, String error, String logout) {
         if (error != null)
             model.addAttribute("error", "Your username and password is invalid.");
@@ -73,7 +74,7 @@ public class LoginController {
             }
         }
         return "login";
-    }
+    }*/
 
     //@RequestMapping(value="/loginfailed", method = RequestMethod.GET)
     public String loginerror(Model model) {
@@ -85,18 +86,6 @@ public class LoginController {
   //  @RequestMapping(value="/logout", method = RequestMethod.GET)
     public String logout(Model model) {
         return "logout";
-    }
-
-  /*
-  other sh. methods.
-   */
-    @RequestMapping("/index")
-    public String listContacts(Map<String, Object> map) {
-        User u = new User();
-        map.put("user", u);
-        map.put("login", u.getLogin());
-        map.put("contactList", (new ConfigurationDAO()).getUserDao().getUserByLogin("User1Sur"));
-        return "login1";
     }
 
     @InitBinder

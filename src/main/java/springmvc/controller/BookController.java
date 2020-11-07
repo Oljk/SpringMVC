@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,25 +66,33 @@ public class BookController {
         return "books";
     }*/
 
-   // @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String getAddNewBookForm(Model model) {
-        Book newBook = new Book();
-        model.addAttribute("newbook", newBook);
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        return "addBookv2";
+        for(GrantedAuthority auth : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+            if (Roles.ROLE_ADMIN.equals(auth.getAuthority())) {
+                Book newBook = new Book();
+                model.addAttribute("newbook", newBook);
+                System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+                return "addBookv2";
+            }
+        }
+        return "redirect:/";
     }
 
- //   @PreAuthorize("hasRole(Roles.ROLE_ADMIN)")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String processAddNewBookForm(@ModelAttribute("newbook")  Book newBook) {
-        if (newBook == null || newBook.isEmpty()) {
-            return "addBookv2";
-        } else {
-            newBook.getItem().setType(ItemType.BOOK);
-            bookService.addBook(newBook);
+        for(GrantedAuthority auth : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+            if (Roles.ROLE_ADMIN.equals(auth.getAuthority())) {
+                if (newBook == null || newBook.isEmpty()) {
+                    return "addBookv2";
+                } else {
+                    newBook.getItem().setType(ItemType.BOOK);
+                    bookService.addBook(newBook);
+                }
+                return "redirect:/books";
+            }
         }
-            return "redirect:/books";
+        return "redirect:/";
     }
 
     /**

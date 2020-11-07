@@ -17,9 +17,9 @@ public class UserDAOImpl implements UserDAO {
     private final String CHECK_REGISTR = "SELECT  1 from USERS where login = ?";
     private final String INSERT_USER = "insert into users (user_id, name, surname, e_mail, password, login, phone_number) values (get_id.nextval, ?, ?, ?, ?, ?, ?)";
     private final String GET_OBJECT_BY_ID =
-            "select user_id, name, surname, e_mail, password, login, phone_number from USERS where user_id = ?";
+            "select user_id, name, surname, e_mail, password, login, phone_number, ISADMIN from USERS where user_id = ?";
     private final String GET_OBJECT_BY_LOGIN =
-            "select user_id, name, surname, e_mail, password, login, phone_number from USERS where login = ?";
+            "select user_id, name, surname, e_mail, password, login, phone_number, ISADMIN from USERS where login = ?";
 
     @Override
     public Object getObjectById(int id) {
@@ -131,7 +131,8 @@ public class UserDAOImpl implements UserDAO {
             String password = resultSet.getString("password");
             String login = resultSet.getString("login");
             String phone_number = resultSet.getString("phone_number");
-            user = new User(user_id, name, surname,phone_number, e_mail, false, login,password);
+            int isAdmin = resultSet.getInt("isadmin");
+            user = new User(user_id, name, surname,phone_number, e_mail, isAdmin == 1, login,password);
         } catch (SQLException e) {
             System.out.println("Get result error");
         }
