@@ -9,11 +9,6 @@ import springmvc.model.dao.daoImpl.*;
 public class ConfigurationDAO {
 
     @Bean
-    public DAO dao() {
-        return new ListDAO();
-    }
-
-    @Bean
     public AuthorDAO getAuthorDao() {
         return new AuthorDAOImpl();
     }

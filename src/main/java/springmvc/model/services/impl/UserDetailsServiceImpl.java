@@ -27,12 +27,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Set<GrantedAuthority> roles = new HashSet();
         roles.add(new SimpleGrantedAuthority(user.isAdmin()?Roles.ROLE_ADMIN:Roles.ROLE_USER));
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), roles);
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    /*    System.out.println(userDetails.toString());
-        System.out.println(encoder.encode("123"));
-        System.out.println(encoder.encode("123").equals(user.getPassword()));
-        System.out.println(encoder.matches("123", userDetails.getPassword()));
-        System.out.println(encoder.matches("123", new BCryptPasswordEncoder().encode("123")));*/
         return userDetails;
     }
 

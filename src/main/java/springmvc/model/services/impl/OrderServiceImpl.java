@@ -3,6 +3,7 @@ package springmvc.model.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import springmvc.model.dao.BookDAO;
 import springmvc.model.entities.Book;
+import springmvc.model.entities.Order;
 import springmvc.model.services.OrderService;
 
 public class OrderServiceImpl implements OrderService {
@@ -18,6 +19,12 @@ public class OrderServiceImpl implements OrderService {
         bookById.setAmount(bookById.getAmount() - quantity);
         bookDAO.updateAmount(id,bookById.getAmount());
         return bookById;
+    }
+
+    @Override
+    public Order processOrder(Order order) {
+        order.getOrderItems();
+        return null;
     }
 
 }

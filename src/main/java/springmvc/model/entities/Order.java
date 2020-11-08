@@ -1,6 +1,9 @@
 package springmvc.model.entities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Order {
@@ -10,16 +13,32 @@ public class Order {
     private double summ;
     private String comments;
     private boolean isDone;
-    private ArrayList<Book> books;
+    private Map<Integer, OrderItem> books;
 
-    public Order(int order_id, int user_id, String adress, double summ, String comments, boolean isDone, ArrayList<Book> books) {
+    public Order() {
+        books = new HashMap<>();
+    }
+
+    public Order(int order_id, int user_id, String adress, String comments, boolean isDone, List<OrderItem> items) {
+        books = new HashMap<>();
+        this.order_id = order_id;
+        this.user_id = user_id;
+        this.adress = adress;
+        this.comments = comments;
+        this.isDone = isDone;
+        for (OrderItem item: items) {
+            books.put(item.orderItemId(), item);
+        }
+        checkSum();
+    }
+
+    public Order(int order_id, int user_id, String adress, double summ, String comments, boolean isDone) {
         this.order_id = order_id;
         this.user_id = user_id;
         this.adress = adress;
         this.summ = summ;
         this.comments = comments;
         this.isDone = isDone;
-        this.books = books;
     }
 
     public int getOrder_id() {
@@ -70,11 +89,11 @@ public class Order {
         isDone = done;
     }
 
-    public ArrayList<Book> getBooks() {
+    public Map<Integer, OrderItem> getOrderItems() {
         return books;
     }
 
-    public void setBooks(ArrayList<Book> books) {
+    public void setBooks(Map<Integer, OrderItem> books) {
         this.books = books;
     }
 
@@ -94,7 +113,6 @@ public class Order {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(order_id, user_id, adress, summ, comments, isDone, books);
     }
 
@@ -109,5 +127,33 @@ public class Order {
                 ", isDone=" + isDone +
                 ", books=" + books +
                 '}';
+    }
+
+    /**
+     * Сумма не пересчитывается для выполненых заказов
+     */
+    public void checkSum() {
+        if (!isDone) {
+            summ = 0;
+            for (OrderItem item : books.values()) {
+                summ += item.getBook().getPrice() * item.getAmount();
+            }
+        }
+    }
+
+    public void addOrderItem(OrderItem item) {
+        books.put(item.orderItemId(), item);
+        checkSum();
+    }
+
+    public void removeOrderItem(OrderItem item) {
+        books.remove(item.orderItemId());
+        checkSum();
+    }
+
+    public void addOrderItems(List<OrderItem> items) {
+        for (OrderItem item: items) {
+            books.put(item.orderItemId(), item);
+        }
     }
 }

@@ -108,7 +108,6 @@ public class ItemDAOImpl implements ItemDAO {
              preparedStatement.setString(3, item.getName());
              preparedStatement.setInt(4, item.getType().intValue());
              preparedStatement.setString(5, item.getDescription());
-            System.out.println((preparedStatement).getParameterMetaData().getParameterCount() + " - " + preparedStatement.toString() + " - ");
              int i = preparedStatement.executeUpdate();
              if (i < 0) id = -1;
         } catch (SQLException e) {
