@@ -2,7 +2,7 @@ package springmvc.model.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import springmvc.model.OwnExeption;
+import springmvc.model.OwnException;
 import springmvc.model.dao.BookDAO;
 import springmvc.model.dao.ItemDAO;
 import springmvc.model.entities.Book;
@@ -18,9 +18,9 @@ public class BookService {
     @Autowired
     ItemDAO itemDAO;
 
-    public boolean addBook(Book book) throws OwnExeption {
+    public boolean addBook(Book book) throws OwnException {
         if (book.getAmount() < 0) {
-            throw new OwnExeption("invlid amount less than 0");
+            throw new OwnException("invlid amount less than 0");
         }
         return bookDAO.addBook(book);
     }
@@ -29,4 +29,8 @@ public class BookService {
         return itemDAO.getThemes();
     }
 
+    public Book getBookById (int id) {
+        System.out.println("book - getBookById: " + id);
+        return (Book)bookDAO.getObjectById(id);
+    }
 }

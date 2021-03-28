@@ -6,6 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * session_id = для заказов-корзин, isVirtual для таких заказов тру
+ * если заказ в базе хранится, то там идет айдишник
+ * пока заказ не подтвердили, заказ висит в корзине по сешн айди,
+ * после подтверждения создается обьект в БД  и дальше заказ по ордер айди формируется
+ */
+
 public class Order {
     private int order_id;
     private int user_id;
@@ -14,9 +21,17 @@ public class Order {
     private String comments;
     private boolean isDone;
     private Map<Integer, OrderItem> books;
+    private String sessionId;
+    private boolean isVirtual = false;
+
 
     public Order() {
         books = new HashMap<>();
+    }
+
+    public Order(String sessionId) {
+        this.sessionId = sessionId;
+        isVirtual = true;
     }
 
     public Order(int order_id, int user_id, String adress, String comments, boolean isDone, List<OrderItem> items) {
@@ -39,6 +54,26 @@ public class Order {
         this.summ = summ;
         this.comments = comments;
         this.isDone = isDone;
+    }
+
+    public Order(int order_id, int user_id, String adress, double summ, String comments, boolean isDone, Map<Integer, OrderItem> books, String sessionId) {
+        this.order_id = order_id;
+        this.user_id = user_id;
+        this.adress = adress;
+        this.summ = summ;
+        this.comments = comments;
+        this.isDone = isDone;
+        this.books = books;
+        this.sessionId = sessionId;
+    }
+
+    public Order(int order_id, int user_id, String adress, Map<Integer, OrderItem> books, String sessionId, boolean isVirtual) {
+        this.order_id = order_id;
+        this.user_id = user_id;
+        this.adress = adress;
+        this.books = books;
+        this.sessionId = sessionId;
+        this.isVirtual = isVirtual;
     }
 
     public int getOrder_id() {
@@ -95,6 +130,18 @@ public class Order {
 
     public void setBooks(Map<Integer, OrderItem> books) {
         this.books = books;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public boolean isCartOrder() {
+        return isVirtual;
     }
 
     @Override

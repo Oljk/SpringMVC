@@ -32,9 +32,12 @@ public class OrderController {
         this.orderDAO = orderDAO;
     }
 
+    // тут тоже корзина странная
+
+
     @RequestMapping(value = "/current/{id}", method = RequestMethod.GET)
     public @ResponseBody Order read(@PathVariable(value = "id") String orderID) {
-        return currentOrderService.read(Integer.valueOf(orderID));
+        return currentOrderService.read((orderID));
     }
 
     @RequestMapping("/{id}/{amount}")
@@ -44,6 +47,8 @@ public class OrderController {
         orderService.processOrder(id, amount);
         return "redirect:/books";
     }
+
+
 
 
 }

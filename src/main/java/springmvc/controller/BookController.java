@@ -1,9 +1,6 @@
 package springmvc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,13 +10,10 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import springmvc.model.OwnException;
 import springmvc.model.Roles;
 import springmvc.model.dao.BookDAO;
 import springmvc.model.entities.Book;
-import springmvc.model.entities.EntityWrapper;
-import springmvc.model.entities.Item;
 import springmvc.model.entities.ItemType;
 import springmvc.model.services.BookService;
 @Controller
@@ -87,7 +81,11 @@ public class BookController {
                     return "addBookv2";
                 } else {
                     newBook.getItem().setType(ItemType.BOOK);
-                    bookService.addBook(newBook);
+                    try {
+                        bookService.addBook(newBook);
+                    } catch (OwnException e) {
+                        e.printStackTrace();
+                    }
                 }
                 return "redirect:/books";
             }

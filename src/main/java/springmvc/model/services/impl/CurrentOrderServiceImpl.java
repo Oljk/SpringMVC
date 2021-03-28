@@ -5,42 +5,45 @@ import springmvc.model.services.CurrentOrderService;
 
 import java.util.HashMap;
 import java.util.Map;
+/*
+* корзина по факту
+*
+*/
 
 public class CurrentOrderServiceImpl implements CurrentOrderService {
-    private Map<Integer, Order> orderList;
+    private Map<String, Order> orderList;
+// session_id + Order
 
     public CurrentOrderServiceImpl() {
         orderList = new HashMap<>();
     }
-/*
-* TODO: менить ордер айди на сешн айди для тех заказов, что  в памяти, а не в базе
-* */
+
     @Override
     public Order create(Order curOrd) {
-        if (orderList.containsKey(curOrd.getOrder_id())) {
-            update(curOrd.getOrder_id(), curOrd);
+        if (orderList.containsKey(curOrd.getSessionId())) {
+            update(curOrd.getSessionId(), curOrd);
         }
-        orderList.put(curOrd.getOrder_id(), curOrd);
-        return null;
+        orderList.put(curOrd.getSessionId(), curOrd);
+        return orderList.get(curOrd.getSessionId());
     }
 
     @Override
-    public Order read(Integer orderId) {
-        if (!orderList.containsKey(orderId)) {
+    public Order read(String sessionId) {
+        if (!orderList.containsKey(sessionId)) {
             return null;
         }
-        return orderList.get(orderId);
+        return orderList.get(sessionId);
     }
 
     @Override
-    public void update(Integer orderId, Order order) {
-        orderList.put(order.getOrder_id(), order);
+    public void update(String sessionId, Order order) {
+        orderList.put(order.getSessionId(), order);
     }
 
     @Override
-    public void delete(Integer orderId) {
-        if (orderList.containsKey(orderId)) {
-            orderList.remove(orderId);
+    public void delete(String sessionId) {
+        if (orderList.containsKey(sessionId)) {
+            orderList.remove(sessionId);
         }
     }
 }
