@@ -24,8 +24,11 @@ public class Item {
         this.description = description;
     }
 
-    public Item() {
+    public Item(String name) {
+        this.name = name;
+    }
 
+    public Item() {
     }
 
     public int getItem_id() {

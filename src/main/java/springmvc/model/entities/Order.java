@@ -1,6 +1,5 @@
 package springmvc.model.entities;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +23,17 @@ public class Order {
     private String sessionId;
     private boolean isVirtual = false;
 
+    public void setVirtual(boolean virtual) {
+        isVirtual = virtual;
+    }
+
+    public Map<Integer, OrderItem> getBooks() {
+        return books;
+    }
+
+    public boolean isVirtual() {
+        return isVirtual;
+    }
 
     public Order() {
         books = new HashMap<>();
@@ -203,4 +213,6 @@ public class Order {
             books.put(item.orderItemId(), item);
         }
     }
+
+
 }

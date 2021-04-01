@@ -2,7 +2,6 @@ package springmvc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,9 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import springmvc.model.OwnException;
 import springmvc.model.dao.BookDAO;
 import springmvc.model.entities.Book;
+import springmvc.model.entities.Item;
 import springmvc.model.entities.Order;
 import springmvc.model.entities.OrderItem;
 import springmvc.model.services.BookService;
@@ -25,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  * пока корзина тут, возможно перенесется в OrderController
  */
 
-@Controller
+@RestController
 @RequestMapping(value = "/cart")
 public class CartController {
 
@@ -41,9 +42,10 @@ public class CartController {
     @Autowired
     private BookDAO bookDAO;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)//@PostMapping
     public @ResponseBody
     Order create(@RequestBody Order cart) {
+        System.out.println("CartController.create() " + cart);
         return cartService.create(cart);
     }
 
